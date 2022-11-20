@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta charset="utf-8">
+    <link href="../css/bootstrap.min.css"
+          th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div class="card my-3">
+        <div class="card-body">
+            <h3 class="card-title" th:text="${post.title}">제목</h3>
+            <h6 class="card-subtitle my-3 text-muted" th:text="|작성자 : ${post.author}|">작성자</h6>
+            <h6 class="card-subtitle mb-3 text-muted" th:text="|작성일 : ${post.getFormattedCreateDate()}|">작성일</h6>
+            <h6 class="card-subtitle mb-3 text-muted" th:text="|조회수 : ${post.views}|">조회수</h6>
+            <p class="card-text" style="white-space: pre-line" th:text="${post.content}">글 내용</p>
+            <a href="#" th:href="@{|/posts/${post.id}/edit|}" class="btn btn-primary">수정</a>
+            <a href="#" th:href="@{/posts}" class="btn btn-primary">목록으로</a>
+            <form role="form" class="form-inline mt-2" th:action="@{|/posts/${post.id}/delete|}" method="post">
+                <button class="btn btn-danger" type="submit" onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</button>
+            </form>
+        </div>
+    </div>
+    <!-- 댓글 -->
+    <h6 th:if="${#lists.size(comments) > 0}" class="border-bottom py-2 my-3" th:text="|${#lists.size(comments)}개의 댓글이 있습니다.|"></h6>
+    <h6 th:if="${#lists.size(comments) == 0}" class="border-bottom py-2 my-3" th:text="'아직 댓글이 없습니다. 첫 댓글을 남겨보세요!'"></h6>
+    <div th:each="comment : ${comments}" class="card my-3">
+        <div class="card-body">
+            <h6 class="card-title" th:text="|작성자 : ${comment.author}|">댓글 작성자</h6>
+            <h6 class="card-subtitle mb-3 text-muted" th:text="|작성일 : ${comment.getFormattedCreateDate()}|">댓글 작성일</h6>
+            <p class="card-text" style="white-space: pre-line" th:text="${comment.content}">댓글 내용</p>
+        </div>
+    </div>
+    <form th:action="@{/posts/{postId}/comment(postId=${post.id})}" method="post" class="my-3">
+        <h5 class="border-bottom py-2 my-3">댓글 남기기</h5>
+        <div class="mb-3">
+            <label for="author" class="form-label">작성자</label>
+            <input type="text" id="author" name="author" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">내용</label>
+            <textarea name="content" id="content" class="form-control" rows="5"></textarea>
+        </div>
+        <input type="submit" value="등록" class="btn btn-primary">
+    </form>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>
