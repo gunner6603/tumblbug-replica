@@ -1,8 +1,12 @@
 package hello.tumblbug.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
+@Getter @Setter
 public class Reward {
 
     @Id @GeneratedValue
@@ -15,6 +19,11 @@ public class Reward {
 
     private int salesCount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Project project;
+
+    public Reward(int price, String description) {
+        this.price = price;
+        this.description = description;
+    }
 }

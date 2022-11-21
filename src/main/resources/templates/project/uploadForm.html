@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="py-5 text-center">
+        <h2>프로젝트 등록</h2>
+    </div>
+    <form th:action th:object="${form}" method="post" enctype="multipart/form-data">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+               th:text="${err}">전체 오류 메시지</p>
+        </div>
+        <div>
+            <label for="title">프로젝트명</label>
+            <input type="text" id="title" th:field="*{title}" class="form-control"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{title}" />
+        </div>
+        <div>카테고리</div>
+        <div th:each="category : ${categories}" class="form-check form-check-inline">
+            <input type="radio" th:field="*{category}" th:value="${category.name()}"
+                   class="form-check-input">
+            <label th:for="${#ids.prev('category')}" th:text="${category.description}"
+                   class="form-check-label">
+                BOOK
+            </label>
+        </div>
+        <div>
+            <label for="mainImage">메인 이미지</label>
+            <input type="file" id="mainImage" th:field="*{mainImage}" class="form-control"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{mainImage}" />
+        </div>
+        <div>
+            <label for="subImages">서브 이미지</label>
+            <input type="file" id="subImages" th:field="*{subImages}" class="form-control"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{subImages}" />
+        </div>
+        <div>
+            <label for="description">설명</label>
+            <textarea id="description" th:field="*{description}"
+                   class="form-control"
+                   th:errorclass="field-error">
+            </textarea>
+            <div class="field-error" th:errors="*{description}" />
+        </div>
+        <div>
+            <label for="reward1Price">첫 번째 리워드 가격</label>
+            <input type="number" id="reward1Price" th:field="*{reward1Price}"
+                   class="form-control"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{reward1Price}" />
+        </div>
+        <div>
+            <label for="reward1Description">첫 번째 리워드 설명</label>
+            <input type="text" id="reward1Description" th:field="*{reward1Description}"
+                   class="form-control"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{reward1Description}" />
+        </div>
+        <div>
+            <label for="reward2Price">두 번째 리워드 가격</label>
+            <input type="number" id="reward2Price" th:field="*{reward2Price}"
+                   class="form-control"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{reward2Price}" />
+        </div>
+        <div>
+            <label for="reward2Description">두 번째 리워드 설명</label>
+            <input type="text" id="reward2Description" th:field="*{reward2Description}"
+                   class="form-control"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{reward2Description}" />
+        </div>
+        <div>
+            <label for="deadline">마감기한</label>
+            <input type="text" id="deadline" th:field="*{deadline}"
+                   class="form-control"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{deadline}" />
+        </div>
+
+        <hr class="my-4">
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg" type="submit">
+                    등록하기</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        th:onclick="|location.href='@{/}'|"
+                        type="button">취소</button>
+            </div>
+        </div>
+    </form>
+</div> <!-- /container -->
+</body>
+</html>

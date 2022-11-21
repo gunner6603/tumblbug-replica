@@ -1,13 +1,18 @@
 package hello.tumblbug.domain;
 
+import hello.tumblbug.dto.ProjectUploadDto;
 import hello.tumblbug.file.UploadFile;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
+@Getter @Setter
 public class Project {
 
     @Id @GeneratedValue
@@ -19,7 +24,7 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Member creator;
 
     @Embedded
@@ -29,24 +34,29 @@ public class Project {
     @CollectionTable(joinColumns = @JoinColumn(name = "PROJECT_ID"))
     private List<UploadFile> subImages = new ArrayList<>();
 
+    @OneToMany(mappedBy = "project")
+    List<MemberProject> memberProjects = new ArrayList<>();
+
     private int targetSponsorship;
 
     private int currentSponsorship;
 
     private String description;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reward> rewards = new ArrayList<>();
 
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime deadline;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createTime;
+    private LocalDateTime createdTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime updateTime;
+    private LocalDateTime lastModifiedTime;
 
     @OneToMany(mappedBy = "project")
     private List<CommunityPost> communityPosts = new ArrayList<>();
+
+    public void addReward(Reward reward) {
+        rewards.add(reward);
+        reward.setProject(this);
+    }
 }
