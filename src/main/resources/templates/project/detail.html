@@ -4,88 +4,47 @@
     <meta charset="utf-8">
     <link th:href="@{/css/bootstrap.min.css}"
           href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/static/js/bootstrap.bundle.js"></script>
+    <script th:src="@{/js/bootstrap.bundle.js}" src="/static/js/bootstrap.bundle.js"></script>
     <style>
     </style>
 </head>
 <body>
-<div class="container-md">
-    <nav class="navbar bg-white">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#"><img src="/static/image/logo.png" alt="Bootstrap" width="100%" height="100%"></a>
-            <div class="d-flex justify-content-end">
-                <a class="btn" href="#" role="button"><strong>프로젝트 올리기</strong></a>
-                <a class="btn" href="#" role="button"><strong>로그인/회원가입</strong></a>
-            </div>
-        </div>
-    </nav>
-    <nav class="navbar navbar-expand-lg bg-white">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link active dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <strong>카테고리</strong>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">도서</a></li>
-                            <li><a class="dropdown-item" href="#">영화</a></li>
-                            <li><a class="dropdown-item" href="#">굿즈</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#"><strong>홈</strong></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#"><strong>인기</strong></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#"><strong>마감임박</strong></a>
-                    </li>
-                </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2 bg-light" type="search" placeholder="검색어를 입력해주세요." aria-label="Search" style="width: 180px; font-size:0.8em">
-                    <button class="btn btn-outline-dark" type="submit"><span style="font-size:0.8em">Search</span></button>
-                </form>
-            </div>
-        </div>
-    </nav>
+<div class="container-md" th:object="${project}">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
     <div class="py-4 mb-4">
         <div class="text-center my-3 fs-4">
-            <span class="badge text-bg-secondary">굿즈</span>
+            <span class="badge text-bg-secondary" th:text="*{category.description}">굿즈</span>
         </div>
-        <h1 class="text-center"><strong>조향사가 직접 만든 천연 퍼퓸 샴푸와 비누</strong></h1>
+        <h1 class="text-center fw-bold" th:text="*{title}"><strong>조향사가 직접 만든 천연 퍼퓸 샴푸와 비누</strong></h1>
     </div>
     <div class="row">
         <div class="col-md-7 px-5 my-auto">
-            <img src="/static/image/mainImage.png" style="width: 100%; height: auto" alt="mainImage"></div>
+            <img src="/static/image/mainImage.png" th:src="|/project/images/*{mainImage.storeFileName}|" style="width: 100%; height: auto" alt="mainImage"></div>
         <div class="col-md-5 px-5 pt-3" style="font-size: 1em">
             모인금액<br/>
-            <span style="font-size: 2.5em">10,000,000</span> 원&nbsp;&nbsp;<span style="font-size:1.5em"><strong>400%</strong></span><br/><br/>
+            <span style="font-size: 2.5em" th:text="*{{currentSponsorship}}">10,000,000</span> 원&nbsp;&nbsp;
+            <span style="font-size: 1.5em; font-weight: bold" th:text="|${achievementRate}%|">400%</span><br/><br/>
             남은시간<br/>
-            <span style="font-size: 2.5em">22</span> 일<br/><br/>
+            <span style="font-size: 2.5em" th:text="${leftDays}">22</span> 일<br/><br/>
             후원자<br/>
-            <span style="font-size: 2.5em">364</span> 명<br/>
+            <span style="font-size: 2.5em" th:text="${#lists.size(project.memberProjects)}">364</span> 명<br/>
             <hr class="my-4">
             <div class="row">
                 <div class="col-4 my-1 fw-bold">
                     목표금액
                 </div>
-                <div class="col-8 my-1">
+                <div class="col-8 my-1" th:text="|*{{targetSponsorship}}원|">
                     2,500,000원
                 </div>
                 <div class="col-4 my-1 fw-bold">
                     펀딩 기간
                 </div>
                 <div class="col-8 my-1">
-                    2022.11.18 ~ 2022.12.13
+                    <span th:text="*{{createdTime}}">2022.11.18</span> ~ <span th:text="*{{deadline}}">2022.12.13</span>
                 </div>
             </div>
             <div class="d-grid col-10 mx-auto my-3">
-                <button class="btn btn-danger fw-bold" style="height: 4em" type="button">이 프로젝트 후원하기</button>
+                <button class="btn btn-danger fw-bold" style="height: 4em" type="button" th:onclick="location.href='#option'">이 프로젝트 후원하기</button>
             </div>
         </div>
     </div>
@@ -101,71 +60,33 @@
 
     <div class="row">
         <div class="col-md-7 px-5 py-5">
-            <p class="lh-lg">
+            <p class="lh-lg" th:text="*{description}">
             당신이 꼭 필요해요! 유니콘과 비밀의 이세계 향료 여행!
-                이세계 유니콘 2탄 향수의
-
-                샴푸와 비누가 드디어 완성되었습니다.
-
-                그동안 오래 기다려주신 여러분 감사합니다.
-
-                # 후원자분들의 요청에 보답하며..
-                안녕하세요.
-
-                여러분께 언제나 상상 속 흥미롭고 좋은 향을 드리고자 노력하는 벨망입니다.
-
-                지난 2월 진행했었던 유니콘의 이세계 야간비행 프로젝트를 기억하시나요?
-
-                성공적인 프로젝트를 진행한 이후로 저희는 "출시된 향을 바디제품 등의 다른 향 제품으로도 만나고 싶다"는 문의를 꾸준히 받았습니다.
-
-                저희 팀도 유니콘 2탄의 향들이 바디 제품의 향으로도 상당히 어울린다는 것을 인지하고 있었고, 그 이후로 향수가 아닌 다른 향 제품으로의 제품화를 계속해서 연구해왔습니다.
-
-                주변의 수 많은 능력자분들과 업체의 도움으로 여러분께 선보일 만한 퀄리티가 되었다고 생각이 되어 수줍게 여러분께 공개하고자 합니다 : )
-
-                여러분의 관심과 사랑으로 탄생하게된 수제 샴푸와 비누.
-
-                그 동안의 진행 과정을 진솔하게 담아보았습니다. 한번 같이 보실까요?
-
-                퍼퓸 샴푸 ( Perfume Shampoo )
-
-                # 방향성에 대한 고민
-                샴푸는 참 예민하고 민감한 영역입니다.
-
-                개개인마다 두피의 성질차가 너무나 크기 때문에 모두를 만족하는 샴푸란 존재하기 힘듭니다.
-
-                그렇기 때문에 최대한 많은 사람들이 무리 없이 사용하고 향을 느낄 수 있는 방향이 최선이라는 생각이 들었고 이를 위해 샴푸의 '향기'와 '순함'에 초점을 맞추어 남녀노소는 물론 아기에게도 사용할 수 있는 순한 향기 샴푸를 연구하기 시작했습니다.
-
-                # 샴푸와 향료
-                조금의 차이는 있겠지만 근본적으로 향료는 그 자체로도 피부에 자극이 갈 수 있는 물질입니다.
-
-                일반 향수와 섬유 향수가 엄격하게 나뉘어지고 관리되는 이유이기도 하며, 한편으로는 값 비싼 향료를 사용한 천연 유래의 고급 향수들의 강도와 지속력이 중저가 향수에 비해서 약한 이유이기도 합니다.
-
-                벨망은 샴푸의 배합 과정에서 불필요한 향료의 비율을 최대한 낮추고, 저희의 강점인 퀄리티 높은 향료와 EWG 그린등급의 천연 에센셜 오일을 사용했습니다.
             </p>
         </div>
         <div class="col-md-5 px-5 my-4" style="font-size: 1em">
             <div class="card my-4">
                 <div class="card-body px-4">
                     <p class="my-3 fw-bold">창작자 소개</p>
-                    <p class="my-3 fw-bold">벨망</p>
-                    <p class="card-text">벨망은 조향사와 디자이너가 함께하는 프로젝트 그룹입니다.</p>
+                    <p class="my-3 fw-bold" th:text="*{creator.username}">벨망</p>
+                    <p class="card-text" th:text="*{creator.info}">벨망은 조향사와 디자이너가 함께하는 프로젝트 그룹입니다.</p>
                     <a href="#" class="btn btn-secondary" style="width: 100%">+ 팔로우</a>
                 </div>
             </div>
-            <p class="fw-bold">선물 선택</p>
-            <div class="card my-3">
+            <p class="fw-bold" id="option">선물 선택</p>
+            <div class="card my-3" th:object="${project.rewards[0]}">
                 <div class="card-body px-4">
-                    <p class="my-3 fw-bold fs-3">9,900원</p>
-                    <p class="my-3">(얼리버드) 유니콘 비누 4종 중 택1 (배송비 포함)</p>
+                    <p class="my-3 fw-bold fs-3" th:text="|*{{price}}원|">9,900원</p>
+                    <p class="my-3" th:text="*{description}">(얼리버드) 유니콘 비누 4종 중 택1 (배송비 포함)</p>
                     <div class="d-grid col-12 mx-auto my-3">
                         <button class="btn btn-danger fw-bold" style="height: 3em" type="button">이 옵션으로 후원하기</button>
                     </div>
                 </div>
             </div>
-            <div class="card my-3">
+            <div class="card my-3" th:object="${project.rewards[1]}">
                 <div class="card-body px-4">
-                    <p class="my-3 fw-bold fs-3">19,000원</p>
-                    <p class="my-3">(얼리버드) 유니콘 비누 4종 중 택2 (배송비 포함)</p>
+                    <p class="my-3 fw-bold fs-3" th:text="|*{{price}}원|">19,000원</p>
+                    <p class="my-3" th:text="*{description}">(얼리버드) 유니콘 비누 4종 중 택2 (배송비 포함)</p>
                     <div class="d-grid col-12 mx-auto my-3">
                         <button class="btn btn-danger fw-bold" style="height: 3em" type="button">이 옵션으로 후원하기</button>
                     </div>

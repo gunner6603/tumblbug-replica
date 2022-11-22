@@ -11,12 +11,17 @@ import hello.tumblbug.file.UploadFile;
 import hello.tumblbug.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -35,7 +40,7 @@ public class ProjectController {
     }
 
     @PostMapping("/add")
-    public String upload(@ModelAttribute("form") ProjectUploadForm form, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, RedirectAttributes redirectAttributes) throws IOException {
+    public String upload(@ModelAttribute("form") ProjectUploadForm form, @SessionAttribute(value = SessionConst.LOGIN_MEMBER) Member loginMember, RedirectAttributes redirectAttributes) throws IOException {
         log.info("form={}", form);
 
         UploadFile mainImage = fileStore.storeFile(form.getMainImage());
@@ -44,7 +49,7 @@ public class ProjectController {
         Reward reward1 = new Reward(form.getReward1Price(), form.getReward1Description());
         Reward reward2 = new Reward(form.getReward2Price(), form.getReward2Description());
 
-        ProjectUploadDto projectUploadDto = new ProjectUploadDto(form.getTitle(), form.getCategory(), loginMember, mainImage, subImages, form.getDescription(), reward1, reward2, form.getDeadline());
+        ProjectUploadDto projectUploadDto = new ProjectUploadDto(form.getTitle(), form.getCategory(), loginMember, mainImage, subImages, form.getDescription(), form.getTargetSponsorship(), reward1, reward2, form.getDeadline());
 
         Long projectId = projectService.createProject(projectUploadDto);
         redirectAttributes.addAttribute("projectId", projectId);
@@ -55,7 +60,18 @@ public class ProjectController {
     @GetMapping("/{projectId}")
     public String projectDetail(@PathVariable Long projectId, Model model) {
         Project project = projectService.findOne(projectId);
+        long leftDays = Duration.between(LocalDateTime.now(), project.getDeadline()).toDays();
+        int achievementRate = (int) Math.floor(project.getCurrentSponsorship() / project.getTargetSponsorship() * 100);
         model.addAttribute("project", project);
+        model.addAttribute("leftDays", leftDays);
+        model.addAttribute("achievementRate", achievementRate);
         return "project/detail";
+    }
+
+    @ResponseBody
+    @GetMapping("/images/{filename}")
+    public Resource downloadImage(@PathVariable String filename) throws
+            MalformedURLException {
+        return new UrlResource("file:" + fileStore.getFullPath(filename));
     }
 }

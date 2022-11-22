@@ -24,6 +24,7 @@ public class ProjectService {
         project.setMainImage(dto.getMainImage());
         project.setSubImages(dto.getSubImages());
         project.setDescription(dto.getDescription());
+        project.setTargetSponsorship(dto.getTargetSponsorship());
         project.addReward(dto.getReward1());
         project.addReward(dto.getReward2());
         project.setDeadline(dto.getDeadline());

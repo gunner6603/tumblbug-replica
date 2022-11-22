@@ -23,6 +23,8 @@ public class ProjectUploadForm {
 
     private String description;
 
+    private int targetSponsorship;
+
     private int reward1Price;
 
     private String reward1Description;

@@ -2,6 +2,7 @@ package hello.tumblbug.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 
@@ -13,6 +14,7 @@ public class Reward {
     @Column(name = "REWARD_ID")
     private Long id;
 
+    @NumberFormat(pattern = "###,###")
     private int price;
 
     private String description;
@@ -25,5 +27,8 @@ public class Reward {
     public Reward(int price, String description) {
         this.price = price;
         this.description = description;
+    }
+
+    public Reward() {
     }
 }

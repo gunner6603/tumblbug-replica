@@ -47,7 +47,7 @@
         </div>
         <div>
             <label for="subImages">서브 이미지</label>
-            <input type="file" id="subImages" th:field="*{subImages}" class="form-control"
+            <input type="file" multiple="multiple" id="subImages" th:field="*{subImages}" class="form-control"
                    th:errorclass="field-error">
             <div class="field-error" th:errors="*{subImages}" />
         </div>
@@ -58,6 +58,13 @@
                    th:errorclass="field-error">
             </textarea>
             <div class="field-error" th:errors="*{description}" />
+        </div>
+        <div>
+            <label for="targetSponsorship">목표금액</label>
+            <input type="number" id="targetSponsorship" th:field="*{targetSponsorship}"
+                   class="form-control"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{targetSponsorship}" />
         </div>
         <div>
             <label for="reward1Price">첫 번째 리워드 가격</label>

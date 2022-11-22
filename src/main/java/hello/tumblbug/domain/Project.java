@@ -4,6 +4,8 @@ import hello.tumblbug.dto.ProjectUploadDto;
 import hello.tumblbug.file.UploadFile;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -37,8 +39,10 @@ public class Project {
     @OneToMany(mappedBy = "project")
     List<MemberProject> memberProjects = new ArrayList<>();
 
+    @NumberFormat(pattern = "###,###")
     private int targetSponsorship;
 
+    @NumberFormat(pattern = "###,###")
     private int currentSponsorship;
 
     private String description;
@@ -46,8 +50,10 @@ public class Project {
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reward> rewards = new ArrayList<>();
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime deadline;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createdTime;
 
     private LocalDateTime lastModifiedTime;

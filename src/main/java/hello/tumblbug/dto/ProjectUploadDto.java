@@ -28,6 +28,8 @@ public class ProjectUploadDto {
 
     private String description;
 
+    private int targetSponsorship;
+
     private Reward reward1;
 
     private Reward reward2;
