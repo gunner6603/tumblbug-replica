@@ -1,6 +1,7 @@
 package hello.tumblbug.repository;
 
 import hello.tumblbug.domain.Project;
+import hello.tumblbug.dto.SimpleProjectDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,11 @@ public class ProjectRepository {
 
     public List<Project> findAll() {
         return em.createQuery("select p from Project p", Project.class)
+                .getResultList();
+    }
+
+    public List<SimpleProjectDto> findAllAsSimpleProjectDto() {
+        return em.createQuery("select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) from Project p join p.creator m", SimpleProjectDto.class)
                 .getResultList();
     }
 }

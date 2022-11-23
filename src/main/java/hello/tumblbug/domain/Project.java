@@ -65,4 +65,21 @@ public class Project {
         rewards.add(reward);
         reward.setProject(this);
     }
+
+    public Project() {
+    }
+
+    public Project(String title, Category category, Member creator, UploadFile mainImage, int targetSponsorship, String description, LocalDateTime deadline, Reward reward1, Reward reward2) {
+        this.title = title;
+        this.category = category;
+        this.creator = creator;
+        this.mainImage = mainImage;
+        this.targetSponsorship = targetSponsorship;
+        this.description = description;
+        this.deadline = deadline;
+        this.createdTime = LocalDateTime.now();
+        this.lastModifiedTime = LocalDateTime.now();
+        addReward(reward1);
+        addReward(reward2);
+    }
 }

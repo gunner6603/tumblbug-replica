@@ -6,6 +6,7 @@ import hello.tumblbug.domain.Member;
 import hello.tumblbug.domain.Project;
 import hello.tumblbug.domain.Reward;
 import hello.tumblbug.dto.ProjectUploadDto;
+import hello.tumblbug.dto.SimpleProjectDto;
 import hello.tumblbug.file.FileStore;
 import hello.tumblbug.file.UploadFile;
 import hello.tumblbug.service.ProjectService;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -61,7 +63,7 @@ public class ProjectController {
     public String projectDetail(@PathVariable Long projectId, Model model) {
         Project project = projectService.findOne(projectId);
         long leftDays = Duration.between(LocalDateTime.now(), project.getDeadline()).toDays();
-        int achievementRate = (int) Math.floor(project.getCurrentSponsorship() / project.getTargetSponsorship() * 100);
+        int achievementRate = project.getCurrentSponsorship() * 100 / project.getTargetSponsorship();
         model.addAttribute("project", project);
         model.addAttribute("leftDays", leftDays);
         model.addAttribute("achievementRate", achievementRate);
@@ -73,5 +75,25 @@ public class ProjectController {
     public Resource downloadImage(@PathVariable String filename) throws
             MalformedURLException {
         return new UrlResource("file:" + fileStore.getFullPath(filename));
+    }
+
+    @GetMapping("/home")
+    public String home(Model model) {
+        List<SimpleProjectDto> projects = projectService.findAllAsSimpleProjectDto();
+        ArrayList<ArrayList<SimpleProjectDto>> projectGrid = new ArrayList<>();
+        ArrayList<SimpleProjectDto> row = new ArrayList<>();;
+        for (int i = 0; i < projects.size(); i++) {
+            row.add(projects.get(i));
+            if (i % 4 == 3) {
+                projectGrid.add(row);
+                row = new ArrayList<>();
+            }
+        }
+        if (projects.size() % 4 != 0) {
+            projectGrid.add(row);
+        }
+        model.addAttribute("projectGrid", projectGrid);
+        log.info("projectGrid.size()={}", projectGrid.size());
+        return "project/home";
     }
 }
