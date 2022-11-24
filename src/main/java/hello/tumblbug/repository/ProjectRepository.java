@@ -34,4 +34,24 @@ public class ProjectRepository {
         return em.createQuery("select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) from Project p join p.creator m", SimpleProjectDto.class)
                 .getResultList();
     }
+
+    public List<SimpleProjectDto> findAllSimpleByTimeDescWithOffsetLimit(int offset, int limit) {
+        return em.createQuery(
+                "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
+                        "from Project p join p.creator m " +
+                        "order by p.createdTime desc", SimpleProjectDto.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+    public List<SimpleProjectDto> findAllSimpleByCurrentSponsorshipDescWithOffsetLimit(int offset, int limit) {
+        return em.createQuery(
+                        "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
+                                "from Project p join p.creator m " +
+                                "order by p.currentSponsorship desc", SimpleProjectDto.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
 }

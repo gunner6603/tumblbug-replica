@@ -42,4 +42,12 @@ public class ProjectService {
     public List<SimpleProjectDto> findAllAsSimpleProjectDto() {
         return projectRepository.findAllAsSimpleProjectDto();
     }
+
+    public List<SimpleProjectDto> findLatestN(int n) {
+        return projectRepository.findAllSimpleByTimeDescWithOffsetLimit(0, n);
+    }
+
+    public List<SimpleProjectDto> findMostPopularN(int n) {
+        return projectRepository.findAllSimpleByCurrentSponsorshipDescWithOffsetLimit(0, n);
+    }
 }

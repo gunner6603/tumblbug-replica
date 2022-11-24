@@ -13,8 +13,9 @@
                 <div class="container-fluid">
                     <a class="navbar-brand" th:href="@{/}" href="#"><img th:src="@{/image/logo.png}" src="/static/image/logo.png" alt="Tumblbug" width="100%" height="100%"></a>
                     <div class="d-flex justify-content-end">
-                        <a class="btn" href="#" role="button"><strong>프로젝트 올리기</strong></a>
-                        <a class="btn" href="#" role="button"><strong>로그인/회원가입</strong></a>
+                        <a class="btn" href="#" th:href="@{/project/add}" role="button"><strong>프로젝트 올리기</strong></a>
+                        <a class="btn" href="#" th:href="@{/login}" role="button" th:if="${#session == null or #session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER) == null}"><strong>로그인/회원가입</strong></a>
+                        <a class="btn fw-bold" href="#" th:href="'#'" role="button" th:if="${#session != null and #session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER) != null}" th:text="${#session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER).username}">username</a>
                     </div>
                 </div>
             </nav>
@@ -30,19 +31,22 @@
                                     <strong>카테고리</strong>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">도서</a></li>
-                                    <li><a class="dropdown-item" href="#">영화</a></li>
-                                    <li><a class="dropdown-item" href="#">굿즈</a></li>
+                                    <li><a class="dropdown-item" href="#" th:href="@{/project/category/book}">도서</a></li>
+                                    <li><a class="dropdown-item" href="#" th:href="@{/project/category/film}">영화</a></li>
+                                    <li><a class="dropdown-item" href="#" th:href="@{/project/category/goods}">굿즈</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" style="color: black" aria-current="page" href="#"><strong>홈</strong></a>
+                                <a class="nav-link active" style="color: black" aria-current="page" href="#" th:href="@{/project/home}"><strong>홈</strong></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" style="color: black" aria-current="page" href="#"><strong>인기</strong></a>
+                                <a class="nav-link active" style="color: black" aria-current="page" href="#" th:href="@{/project/popular}"><strong>인기</strong></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" style="color: black" aria-current="page" href="#"><strong>마감임박</strong></a>
+                                <a class="nav-link active" style="color: black" aria-current="page" href="#" th:href="@{/project/new}"><strong>신규</strong></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" style="color: black" aria-current="page" href="#" th:href="@{/project/imminent}"><strong>마감임박</strong></a>
                             </li>
                         </ul>
                         <form class="d-flex" role="search">

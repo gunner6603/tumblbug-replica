@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,21 +80,41 @@ public class ProjectController {
 
     @GetMapping("/home")
     public String home(Model model) {
-        List<SimpleProjectDto> projects = projectService.findAllAsSimpleProjectDto();
+        List<SimpleProjectDto> latestProjects = projectService.findLatestN(16);
         ArrayList<ArrayList<SimpleProjectDto>> projectGrid = new ArrayList<>();
-        ArrayList<SimpleProjectDto> row = new ArrayList<>();;
-        for (int i = 0; i < projects.size(); i++) {
-            row.add(projects.get(i));
+        ArrayList<SimpleProjectDto> gridRow = new ArrayList<>();;
+        for (int i = 0; i < latestProjects.size(); i++) {
+            gridRow.add(latestProjects.get(i));
             if (i % 4 == 3) {
-                projectGrid.add(row);
-                row = new ArrayList<>();
+                projectGrid.add(gridRow);
+                gridRow = new ArrayList<>();
             }
         }
-        if (projects.size() % 4 != 0) {
-            projectGrid.add(row);
+        if (latestProjects.size() % 4 != 0) {
+            projectGrid.add(gridRow);
         }
+        List<SimpleProjectDto> popularProjects = projectService.findMostPopularN(8);
+        String timeNow = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yy.MM.dd HH:mm"));
+
         model.addAttribute("projectGrid", projectGrid);
-        log.info("projectGrid.size()={}", projectGrid.size());
+        model.addAttribute("popularProjects", popularProjects);
+        model.addAttribute("timeNow", timeNow);
+
         return "project/home";
+    }
+
+    @GetMapping("/popular")
+    public String popularProjects() {
+        return "project/list";
+    }
+
+    @GetMapping("/new")
+    public String newProjects() {
+        return "project/list";
+    }
+
+    @GetMapping("/imminent")
+    public String imminentProjects() {
+        return "project/list";
     }
 }
