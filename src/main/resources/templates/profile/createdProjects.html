@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <script th:src="@{/js/bootstrap.bundle.js}" src="/static/js/bootstrap.bundle.js"></script>
+    <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container-md"">
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active text-dark fw-bold" href="#">프로필</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-secondary fw-bold" href="#">올린 프로젝트</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-secondary fw-bold" href="#">후원한 프로젝트</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-secondary fw-bold" href="#">팔로워</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-secondary fw-bold" href="#">팔로잉</a>
+    </li>
+</ul>
+<div class="my-4" style="font-size: 15px">
+    <span class="text-danger">0</span>개의 프로젝트가 있습니다.
+    <div class="my-4">
+        <div class="row" th:each="row : ${projectGrid}" th:if="${rowStat.count <= 4}">
+            <div class="col-md-3" th:each="project : ${row}">
+                <a href="#" th:href="@{|/project/${project.projectId}|}">
+                    <img src="/static/image/mainImage.png" th:src="|/project/images/${project.mainImageStoreFileName}|" style="width: 100%; height: 240px; margin-bottom: 18px" alt="mainImage">
+                </a>
+                <div>
+                    <p class="text-secondary fw-bold" style="font-size: 12px; margin-bottom: 4px"><a class="text-secondary" href="#" th:text="${project.category.description}">굿즈</a> | <a href="#" class="text-secondary" th:text="${project.creatorUsername}">따개비</a></p>
+                    <p class="fw-bold" style="font-size: 16px"><a href="#" th:href="@{|/project/${project.projectId}|}" th:text="${project.title}" style="color: black">특별한 2023년을 위해, &lt;파도의 모든 기록&gt; 다이어리</a></p>
+                    <p class="text-danger fw-bold" style="font-size: 15px; margin-top: -10px" th:text="|${project.achievementRate}% 달성|">419% 달성</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
