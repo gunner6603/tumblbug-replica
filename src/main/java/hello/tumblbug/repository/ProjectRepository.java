@@ -54,4 +54,14 @@ public class ProjectRepository {
                 .setMaxResults(limit)
                 .getResultList();
     }
+
+    public List<SimpleProjectDto> findAllSimpleByCreatorId(Long memberId) {
+        return em.createQuery(
+                        "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
+                                "from Project p join p.creator m " +
+                                "where m.id = :memberId " +
+                                "order by p.createdTime desc", SimpleProjectDto.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
+    }
 }

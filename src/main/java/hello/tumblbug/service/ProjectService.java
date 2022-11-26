@@ -50,4 +50,8 @@ public class ProjectService {
     public List<SimpleProjectDto> findMostPopularN(int n) {
         return projectRepository.findAllSimpleByCurrentSponsorshipDescWithOffsetLimit(0, n);
     }
+
+    public List<SimpleProjectDto> findCreatedProject(Long memberId) {
+        return projectRepository.findAllSimpleByCreatorId(memberId);
+    }
 }

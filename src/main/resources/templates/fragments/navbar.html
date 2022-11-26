@@ -15,7 +15,17 @@
                     <div class="d-flex justify-content-end">
                         <a class="btn" href="#" th:href="@{/project/add}" role="button"><strong>프로젝트 올리기</strong></a>
                         <a class="btn" href="#" th:href="@{/login}" role="button" th:if="${#session == null or #session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER) == null}"><strong>로그인/회원가입</strong></a>
-                        <a class="btn fw-bold" href="#" th:href="'#'" role="button" th:if="${#session != null and #session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER) != null}" th:text="${#session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER).username}">username</a>
+                        <li class="nav-item dropdown" style="display: inline" th:if="${#session != null and #session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER) != null}">
+                            <a class="nav-link active dropdown-toggle fw-bold" style="color: black" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="${#session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER).username}">
+                                username
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" th:href="@{/member/{memberId}(memberId=${#session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER).id})}">프로필</a></li>
+                                <form th:action="@{/logout}" method="post">
+                                    <li><button class="dropdown-item" type="submit">로그아읏</button></li>
+                                </form>
+                            </ul>
+                        </li>
                     </div>
                 </div>
             </nav>

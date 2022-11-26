@@ -81,18 +81,7 @@ public class ProjectController {
     @GetMapping("/home")
     public String home(Model model) {
         List<SimpleProjectDto> latestProjects = projectService.findLatestN(16);
-        ArrayList<ArrayList<SimpleProjectDto>> projectGrid = new ArrayList<>();
-        ArrayList<SimpleProjectDto> gridRow = new ArrayList<>();;
-        for (int i = 0; i < latestProjects.size(); i++) {
-            gridRow.add(latestProjects.get(i));
-            if (i % 4 == 3) {
-                projectGrid.add(gridRow);
-                gridRow = new ArrayList<>();
-            }
-        }
-        if (latestProjects.size() % 4 != 0) {
-            projectGrid.add(gridRow);
-        }
+        List<List<SimpleProjectDto>> projectGrid = makeGrid(latestProjects, 4);
         List<SimpleProjectDto> popularProjects = projectService.findMostPopularN(8);
         String timeNow = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yy.MM.dd HH:mm"));
 
@@ -116,5 +105,21 @@ public class ProjectController {
     @GetMapping("/imminent")
     public String imminentProjects() {
         return "project/list";
+    }
+
+    public static <T> List<List<T>> makeGrid(List<T> sequence, int colSize) {
+        List<List<T>> projectGrid = new ArrayList<>();
+        List<T> gridRow = new ArrayList<>();;
+        for (int i = 0; i < sequence.size(); i++) {
+            gridRow.add(sequence.get(i));
+            if (i % colSize == colSize - 1) {
+                projectGrid.add(gridRow);
+                gridRow = new ArrayList<>();
+            }
+        }
+        if (sequence.size() % colSize != 0) {
+            projectGrid.add(gridRow);
+        }
+        return projectGrid;
     }
 }

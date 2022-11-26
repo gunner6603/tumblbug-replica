@@ -6,6 +6,7 @@ import hello.tumblbug.domain.Member;
 import hello.tumblbug.service.LoginService;
 import hello.tumblbug.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
@@ -60,6 +62,7 @@ public class LoginController {
         }
         HttpSession session = request.getSession(true);
         session.setAttribute(SessionConst.LOGIN_MEMBER, loginMember);
+        log.info("loginMemberId={}", loginMember.getId());
         return "redirect:/";
     }
 
