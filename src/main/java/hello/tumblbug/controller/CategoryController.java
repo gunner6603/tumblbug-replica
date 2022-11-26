@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/project/category")
 public class CategoryController {
 
-    @GetMapping("/book")
+    @GetMapping("/BOOK")
     public String categoryBook() {
         return "project/list";
     }
 
-    @GetMapping("/film")
+    @GetMapping("/FILM")
     public String categoryFilm() {
         return "project/list";
     }
 
-    @GetMapping("/goods")
+    @GetMapping("/GOODS")
     public String categoryGoods() {
         return "project/list";
     }

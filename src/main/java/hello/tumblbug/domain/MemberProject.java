@@ -1,12 +1,14 @@
 package hello.tumblbug.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class MemberProject {
 
     @Id @GeneratedValue
@@ -21,4 +23,10 @@ public class MemberProject {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Reward reward;
+
+    public MemberProject(Member sponsor, Project project, Reward reward) {
+        this.sponsor = sponsor;
+        this.project = project;
+        this.reward = reward;
+    }
 }

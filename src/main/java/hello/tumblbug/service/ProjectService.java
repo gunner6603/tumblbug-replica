@@ -1,8 +1,13 @@
 package hello.tumblbug.service;
 
+import hello.tumblbug.domain.Member;
+import hello.tumblbug.domain.MemberProject;
 import hello.tumblbug.domain.Project;
+import hello.tumblbug.domain.Reward;
 import hello.tumblbug.dto.ProjectUploadDto;
 import hello.tumblbug.dto.SimpleProjectDto;
+import hello.tumblbug.repository.MemberProjectRepository;
+import hello.tumblbug.repository.MemberRepository;
 import hello.tumblbug.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +22,8 @@ import java.util.List;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final MemberRepository memberRepository;
+    private final MemberProjectRepository memberProjectRepository;
 
     public Long createProject(ProjectUploadDto dto) {
         Project project = new Project();
@@ -53,5 +60,14 @@ public class ProjectService {
 
     public List<SimpleProjectDto> findCreatedProject(Long memberId) {
         return projectRepository.findAllSimpleByCreatorId(memberId);
+    }
+
+    public void sponsorProject(Long memberId, Long projectId, Integer rewardNum) {
+        Member member = memberRepository.findById(memberId);
+        Project project = projectRepository.findById(projectId);
+        Reward reward = project.getRewards().get(rewardNum - 1);
+        MemberProject memberProject = new MemberProject(member, project, reward);
+        memberProjectRepository.save(memberProject);
+        project.increaseCurrentSponsorship(reward.getPrice());
     }
 }

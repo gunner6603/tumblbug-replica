@@ -19,6 +19,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.Duration;
@@ -105,6 +108,17 @@ public class ProjectController {
     @GetMapping("/imminent")
     public String imminentProjects() {
         return "project/list";
+    }
+
+    @PostMapping("/{projectId}/sponsor/{rewardNum}")
+    public String sponsorProject(@PathVariable Long projectId, @PathVariable Integer rewardNum, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
+            return "redirect:/login";
+        }
+        Member member = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
+        projectService.sponsorProject(member.getId(), projectId, rewardNum);
+        return "redirect:/project/{projectId}";
     }
 
     public static <T> List<List<T>> makeGrid(List<T> sequence, int colSize) {

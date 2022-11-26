@@ -66,6 +66,10 @@ public class Project {
         reward.setProject(this);
     }
 
+    public void increaseCurrentSponsorship(int price) {
+        currentSponsorship += price;
+    }
+
     public Project() {
     }
 
