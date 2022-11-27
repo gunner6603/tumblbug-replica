@@ -25,7 +25,9 @@ public class Member {
 
     @ManyToMany
     @JoinTable(joinColumns = @JoinColumn(name = "FOLLOWER_ID"),
-                inverseJoinColumns = @JoinColumn(name = "FOLLOWEE_ID"))
+                inverseJoinColumns = @JoinColumn(name = "FOLLOWEE_ID"),
+                uniqueConstraints = {@UniqueConstraint(columnNames={"FOLLOWER_ID", "FOLLOWEE_ID"})}
+    )
     private List<Member> followings = new ArrayList<>();
 
     @ManyToMany(mappedBy = "followings")

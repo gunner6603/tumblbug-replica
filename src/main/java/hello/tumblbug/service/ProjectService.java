@@ -62,6 +62,10 @@ public class ProjectService {
         return projectRepository.findAllSimpleByCreatorId(memberId);
     }
 
+    public List<SimpleProjectDto> findSponsoredProject(Long memberId) {
+        return projectRepository.findAllSimpleBySponsorId(memberId);
+    }
+
     public void sponsorProject(Long memberId, Long projectId, Integer rewardNum) {
         Member member = memberRepository.findById(memberId);
         Project project = projectRepository.findById(projectId);

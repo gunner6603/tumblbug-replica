@@ -71,9 +71,12 @@
             <div class="card my-4">
                 <div class="card-body px-4">
                     <p class="my-3 fw-bold">창작자 소개</p>
-                    <p class="my-3 fw-bold" th:text="*{creator.username}">벨망</p>
+                    <p class="my-3 fw-bold"><a class="text-black" th:text="*{creator.username}" href="#" th:href="@{/member/{memberId}(memberId=*{creator.id})}">벨망</a></p>
                     <p class="card-text" th:text="*{creator.info}">벨망은 조향사와 디자이너가 함께하는 프로젝트 그룹입니다.</p>
-                    <a href="#" class="btn btn-secondary" style="width: 100%">+ 팔로우</a>
+                    <form th:action="@{/member/{memberId}/follow(memberId=*{creator.id})}" method="post">
+                        <input type="hidden" name="redirectURI" th:value="${#request.getRequestURI()}">
+                        <button class="btn btn-secondary" style="width: 100%" type="submit">+ 팔로우</button>
+                    </form>
                 </div>
             </div>
             <p class="fw-bold" id="option">선물 선택</p>

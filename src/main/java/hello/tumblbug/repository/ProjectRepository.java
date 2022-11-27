@@ -64,4 +64,17 @@ public class ProjectRepository {
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
+
+    public List<SimpleProjectDto> findAllSimpleBySponsorId(Long memberId) {
+        return em.createQuery(
+                        "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
+                                "from Member sp " +
+                                "join sp.memberProjects mp " +
+                                "join mp.project p " +
+                                "join p.creator m " +
+                                "where sp.id = :memberId " +
+                                "order by mp.sponsoredTime desc", SimpleProjectDto.class)
+                .setParameter("memberId", memberId)
+                .getResultList();
+    }
 }

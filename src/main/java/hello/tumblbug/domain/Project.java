@@ -70,6 +70,10 @@ public class Project {
         currentSponsorship += price;
     }
 
+    public int getAchievementRate() {
+        return currentSponsorship * 100 / targetSponsorship;
+    }
+
     public Project() {
     }
 

@@ -25,4 +25,5 @@ server:
       tracking-modes: cookie
 file:
   dir: C:/projects/file/
+default.user.image.filename: defaultUserImage.png
 #  org.hibernate.type: trace

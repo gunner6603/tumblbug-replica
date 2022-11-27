@@ -12,19 +12,19 @@
     <div class="container-md">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active text-dark fw-bold" href="#" th:href="@{/member/{memberId}(memberId=${member.id})}">프로필</a>
+                <a class="nav-link active text-dark fw-bold" href="#" th:href="@{/member/{memberId}(memberId=${memberId})}">프로필</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-secondary fw-bold" href="#" th:href="@{/member/{memberId}/createdProject(memberId=${member.id})}">올린 프로젝트</a>
+                <a class="nav-link text-secondary fw-bold" href="#" th:href="@{/member/{memberId}/createdProject(memberId=${memberId})}">올린 프로젝트</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-secondary fw-bold" href="#" th:href="@{/member/{memberId}/backedProject(memberId=${member.id})}">후원한 프로젝트</a>
+                <a class="nav-link text-secondary fw-bold" href="#" th:href="@{/member/{memberId}/backedProject(memberId=${memberId})}">후원한 프로젝트</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-secondary fw-bold" href="#" th:href="@{/member/{memberId}/follower(memberId=${member.id})}">팔로워</a>
+                <a class="nav-link text-secondary fw-bold" href="#" th:href="@{/member/{memberId}/follower(memberId=${memberId})}">팔로워</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-secondary fw-bold" href="#" th:href="@{/member/{memberId}/following(memberId=${member.id})}">팔로잉</a>
+                <a class="nav-link text-secondary fw-bold" href="#" th:href="@{/member/{memberId}/following(memberId=${memberId})}">팔로잉</a>
             </li>
         </ul>
         <div class="my-4">

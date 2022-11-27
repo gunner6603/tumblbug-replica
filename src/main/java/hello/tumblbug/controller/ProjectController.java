@@ -67,10 +67,9 @@ public class ProjectController {
     public String projectDetail(@PathVariable Long projectId, Model model) {
         Project project = projectService.findOne(projectId);
         long leftDays = Duration.between(LocalDateTime.now(), project.getDeadline()).toDays();
-        int achievementRate = project.getCurrentSponsorship() * 100 / project.getTargetSponsorship();
         model.addAttribute("project", project);
         model.addAttribute("leftDays", leftDays);
-        model.addAttribute("achievementRate", achievementRate);
+        model.addAttribute("achievementRate", project.getAchievementRate());
         return "project/detail";
     }
 
@@ -111,13 +110,11 @@ public class ProjectController {
     }
 
     @PostMapping("/{projectId}/sponsor/{rewardNum}")
-    public String sponsorProject(@PathVariable Long projectId, @PathVariable Integer rewardNum, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
+    public String sponsorProject(@PathVariable Long projectId, @PathVariable Integer rewardNum, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) throws IOException {
+        if (loginMember == null) {
             return "redirect:/login";
         }
-        Member member = (Member) session.getAttribute(SessionConst.LOGIN_MEMBER);
-        projectService.sponsorProject(member.getId(), projectId, rewardNum);
+        projectService.sponsorProject(loginMember.getId(), projectId, rewardNum);
         return "redirect:/project/{projectId}";
     }
 

@@ -2,13 +2,12 @@ package hello.tumblbug.controller;
 
 import hello.tumblbug.controller.form.MemberEditForm;
 import hello.tumblbug.domain.Member;
-import hello.tumblbug.domain.Project;
 import hello.tumblbug.dto.SimpleProjectDto;
-import hello.tumblbug.repository.MemberRepository;
 import hello.tumblbug.service.MemberService;
 import hello.tumblbug.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,12 +50,32 @@ public class MemberController {
 
     @GetMapping("/{memberId}/createdProject")
     public String createdProjectList(@PathVariable Long memberId, Model model) {
-        Member member = memberService.findOne(memberId);
         List<SimpleProjectDto> createdProject = projectService.findCreatedProject(memberId);
         List<List<SimpleProjectDto>> projectGrid = ProjectController.makeGrid(createdProject, 4);
-        model.addAttribute("member", member);
         model.addAttribute("projectNum", createdProject.size());
         model.addAttribute("projectGrid", projectGrid);
         return "profile/createdProjects";
+    }
+
+    @GetMapping("/{memberId}/backedProject")
+    public String sponsoredProjectList(@PathVariable Long memberId, Model model) {
+        List<SimpleProjectDto> sponsoredProject = projectService.findSponsoredProject(memberId);
+        List<List<SimpleProjectDto>> projectGrid = ProjectController.makeGrid(sponsoredProject, 4);
+        model.addAttribute("projectNum", sponsoredProject.size());
+        model.addAttribute("projectGrid", projectGrid);
+        return "profile/backedProjects";
+    }
+
+    @PostMapping("/{memberId}/follow")
+    public String followMember(@PathVariable Long memberId, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, @RequestParam(defaultValue = "/") String redirectURI) {
+        if (loginMember == null) {
+            return "redirect:/login";
+        }
+        try {
+            memberService.followMember(loginMember.getId(), memberId);
+        } catch (DataIntegrityViolationException e) {
+            log.info("Exception={}", e.getClass());
+        }
+        return "redirect:" + redirectURI;
     }
 }
