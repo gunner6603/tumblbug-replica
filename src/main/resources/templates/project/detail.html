@@ -71,7 +71,10 @@
             <div class="card my-4">
                 <div class="card-body px-4">
                     <p class="my-3 fw-bold">창작자 소개</p>
-                    <p class="my-3 fw-bold"><a class="text-black" th:text="*{creator.username}" href="#" th:href="@{/member/{memberId}(memberId=*{creator.id})}">벨망</a></p>
+                    <div class="my-4">
+                        <img class="rounded-circle mx-1" width="40" height="40" src="/static/image/defaultUserImage.png" th:src="|/project/images/*{creator.userImage.storeFileName}|">
+                        <a class="text-black mx-2 fw-bold" th:text="*{creator.username}" href="#" th:href="@{/member/{memberId}(memberId=*{creator.id})}">벨망</a>
+                    </div>
                     <p class="card-text" th:text="*{creator.info}">벨망은 조향사와 디자이너가 함께하는 프로젝트 그룹입니다.</p>
                     <form th:action="@{/member/{memberId}/follow(memberId=*{creator.id})}" method="post">
                         <input type="hidden" name="redirectURI" th:value="${#request.getRequestURI()}">

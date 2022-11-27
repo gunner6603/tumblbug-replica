@@ -26,23 +26,23 @@
             <a class="nav-link text-secondary fw-bold" href="#" th:href="@{/member/{memberId}/backedProject(memberId=${memberId})}">후원한 프로젝트</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-secondary fw-bold" href="#" th:href="@{/member/{memberId}/follower(memberId=${memberId})}">팔로워</a>
+            <a class="nav-link active text-dark fw-bold" href="#" th:href="@{/member/{memberId}/follower(memberId=${memberId})}">팔로워</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active text-dark fw-bold" href="#" th:href="@{/member/{memberId}/following(memberId=${memberId})}">팔로잉</a>
+            <a class="nav-link text-secondary fw-bold" href="#" th:href="@{/member/{memberId}/following(memberId=${memberId})}">팔로잉</a>
         </li>
     </ul>
     <div class="my-4">
-        <div th:if="${!member.followings.isEmpty()}" class="mx-3 my-3 px-4 py-3 border border-dark-50">
-            <th:block th:each="following : ${member.followings}">
+        <div th:if="${!member.followers.isEmpty()}" class="mx-3 my-3 px-4 py-3 border border-dark-50">
+            <th:block th:each="follower : ${member.followers}">
                 <div style="display: flex; justify-content: space-between">
-                    <img class="rounded-circle mx-3 mt-2" width="50" height="50" src="/static/image/defaultUserImage.png" th:src="|/project/images/${following.userImage.storeFileName}|">
+                    <img class="rounded-circle mx-3 mt-2" width="50" height="50" src="/static/image/defaultUserImage.png" th:src="|/project/images/${follower.userImage.storeFileName}|">
                     <div class="mt-1" style="display: inline-block; width: 92.5%">
-                        <p><a href="#" th:href="@{/member/{memberId}(memberId=${following.id})}"><span class="text-black fw-bold" th:text="${following.username}">느리게걷다</span>&nbsp;<span class="text-secondary fw-bold">&gt;</span></a></p>
-                        <p class="text-secondary" style="margin-top: -10px; font-size: 14px" th:text="${following.info}">바쁘게 흘러가는 현대인의 일상에서 잠시 걸음을 늦추고 돌아볼 만한 소박한 가치와 작은 지혜, 휴식 같은 이야기들을 책으로 펴내고 싶은 사람들</p>
+                        <p><a href="#" th:href="@{/member/{memberId}(memberId=${follower.id})}"><span class="text-black fw-bold" th:text="${follower.username}">느리게걷다</span>&nbsp;<span class="text-secondary fw-bold">&gt;</span></a></p>
+                        <p class="text-secondary" style="margin-top: -10px; font-size: 14px" th:text="${follower.info}">바쁘게 흘러가는 현대인의 일상에서 잠시 걸음을 늦추고 돌아볼 만한 소박한 가치와 작은 지혜, 휴식 같은 이야기들을 책으로 펴내고 싶은 사람들</p>
                     </div>
                 </div>
-                <hr th:unless="${followingStat.last}">
+                <hr th:unless="${followerStat.last}">
             </th:block>
         </div>
     </div>

@@ -1,7 +1,9 @@
 package hello.tumblbug.domain;
 
+import hello.tumblbug.file.UploadFile;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -39,10 +41,17 @@ public class Member {
     @OneToMany(mappedBy = "sponsor")
     private List<MemberProject> memberProjects = new ArrayList<>();
 
+    @Embedded
+    private UploadFile userImage;
+
+    public String userImageStoreFileName;
+
     public Member(String username, String loginId, String password) {
         this.username = username;
         this.loginId = loginId;
         this.password = password;
+        this.userImage = new UploadFile(MemberConst.DEFAULT_USER_IMAGE_FILENAME, MemberConst.DEFAULT_USER_IMAGE_FILENAME);
+        this.userImageStoreFileName = MemberConst.DEFAULT_USER_IMAGE_FILENAME;
     }
 
     protected Member() {}

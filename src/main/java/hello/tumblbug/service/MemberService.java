@@ -1,6 +1,7 @@
 package hello.tumblbug.service;
 
 import hello.tumblbug.domain.Member;
+import hello.tumblbug.file.UploadFile;
 import hello.tumblbug.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +32,12 @@ public class MemberService {
         return memberRepository.findById(id);
     }
 
-    public Member updateMember(Long id, String username, String password, String info) {
+    public Member updateMember(Long id, UploadFile userImage, String username, String password, String info) {
         Member member = memberRepository.findById(id);
+        if (userImage != null) {
+            member.setUserImage(userImage);
+            member.setUserImageStoreFileName(userImage.getStoreFileName());
+        }
         member.setUsername(username);
         member.setPassword(password);
         member.setInfo(info);

@@ -13,6 +13,8 @@
 </head>
 <body>
 <div class="container-md">
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    <div th:replace="~{profile/profileHeader :: profileHeader}"></div>
     <ul class="nav nav-tabs">
         <li class="nav-item">
             <a class="nav-link text-secondary fw-bold" href="#" th:href="@{/member/{memberId}(memberId=${memberId})}">프로필</a>

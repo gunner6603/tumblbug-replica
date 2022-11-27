@@ -17,12 +17,18 @@
 <body>
 <div class="container">
     <div class="py-5 text-center">
-        <h2>회원가입</h2>
+        <h2>회원정보 수정</h2>
     </div>
-    <form th:action th:object="${form}" method="post">
+    <form th:action th:object="${form}" method="post" enctype="multipart/form-data">
         <div th:if="${#fields.hasGlobalErrors()}">
             <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                th:text="${err}">전체 오류 메시지</p>
+        </div>
+        <div>
+            <label for="userImage">프로필 이미지</label>
+            <input type="file" id="userImage" th:field="*{userImage}" class="form-control"
+                   th:errorclass="field-error">
+            <div class="field-error" th:errors="*{userImage}" />
         </div>
         <div>
             <label for="username">사용자명</label>
