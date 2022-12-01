@@ -9,14 +9,14 @@ public class PagingDto<T> {
 
     private int pageNum;
     private int limit;
-    private int total;
+    private long total;
     private List<T> elements;
 
     private int startPage;
     private int endPage;
     private int totalPage;
 
-    public PagingDto(int pageNum, int limit, int total, List<T> elements) {
+    public PagingDto(int pageNum, int limit, long total, List<T> elements) {
         this.pageNum = pageNum;
         this.limit = limit;
         this.total = total;

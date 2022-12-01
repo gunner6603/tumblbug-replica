@@ -4,8 +4,7 @@ import hello.tumblbug.domain.Member;
 import hello.tumblbug.domain.MemberProject;
 import hello.tumblbug.domain.Project;
 import hello.tumblbug.domain.Reward;
-import hello.tumblbug.dto.ProjectUploadDto;
-import hello.tumblbug.dto.SimpleProjectDto;
+import hello.tumblbug.dto.*;
 import hello.tumblbug.repository.MemberProjectRepository;
 import hello.tumblbug.repository.MemberRepository;
 import hello.tumblbug.repository.ProjectRepository;
@@ -51,11 +50,29 @@ public class ProjectService {
     }
 
     public List<SimpleProjectDto> findLatestN(int n) {
-        return projectRepository.findAllSimpleByTimeDescWithOffsetLimit(0, n);
+        return projectRepository.findAllSimpleByTimeDescWithOffsetLimit(0, n, false).getDtos();
     }
 
     public List<SimpleProjectDto> findMostPopularN(int n) {
-        return projectRepository.findAllSimpleByCurrentSponsorshipDescWithOffsetLimit(0, n);
+        return projectRepository.findAllSimpleByCurrentSponsorshipDescWithOffsetLimit(0, n, false).getDtos();
+    }
+
+    public PagingDto<SimpleProjectDto> findLatestByPagingDto(PagingQueryDto queryDto) {
+        SimpleProjectDtoWithTotal dtoWithTotal = projectRepository.findAllSimpleByTimeDescWithOffsetLimit(queryDto.getOffset(), queryDto.getLimit(), true);
+        PagingDto<SimpleProjectDto> pagingDto = new PagingDto<>(queryDto.getPageNum(), queryDto.getLimit(), dtoWithTotal.getTotal(), dtoWithTotal.getDtos());
+        return pagingDto;
+    }
+
+    public PagingDto<SimpleProjectDto> findMostPopularByPagingDto(PagingQueryDto queryDto) {
+        SimpleProjectDtoWithTotal dtoWithTotal = projectRepository.findAllSimpleByCurrentSponsorshipDescWithOffsetLimit(queryDto.getOffset(), queryDto.getLimit(), true);
+        PagingDto<SimpleProjectDto> pagingDto = new PagingDto<>(queryDto.getPageNum(), queryDto.getLimit(), dtoWithTotal.getTotal(), dtoWithTotal.getDtos());
+        return pagingDto;
+    }
+
+    public PagingDto<SimpleProjectDto> findMostImminentByPagingDto(PagingQueryDto queryDto) {
+        SimpleProjectDtoWithTotal dtoWithTotal = projectRepository.findAllNotExpiredSimpleByDeadlineAscWithOffsetLimit(queryDto.getOffset(), queryDto.getLimit(), true);
+        PagingDto<SimpleProjectDto> pagingDto = new PagingDto<>(queryDto.getPageNum(), queryDto.getLimit(), dtoWithTotal.getTotal(), dtoWithTotal.getDtos());
+        return pagingDto;
     }
 
     public List<SimpleProjectDto> findCreatedProject(Long memberId) {

@@ -5,6 +5,8 @@ import hello.tumblbug.domain.Category;
 import hello.tumblbug.domain.Member;
 import hello.tumblbug.domain.Project;
 import hello.tumblbug.domain.Reward;
+import hello.tumblbug.dto.PagingDto;
+import hello.tumblbug.dto.PagingQueryDto;
 import hello.tumblbug.dto.ProjectUploadDto;
 import hello.tumblbug.dto.SimpleProjectDto;
 import hello.tumblbug.file.FileStore;
@@ -95,17 +97,29 @@ public class ProjectController {
     }
 
     @GetMapping("/popular")
-    public String popularProjects() {
+    public String popularProjects(@ModelAttribute PagingQueryDto queryDto, Model model) {
+        PagingDto<SimpleProjectDto> pagingDto = projectService.findMostPopularByPagingDto(queryDto);
+        List<List<SimpleProjectDto>> projectGrid = makeGrid(pagingDto.getElements(), 4);
+        model.addAttribute("pagingDto", pagingDto);
+        model.addAttribute("projectGrid", projectGrid);
         return "project/list";
     }
 
     @GetMapping("/new")
-    public String newProjects() {
+    public String newProjects(@ModelAttribute PagingQueryDto queryDto, Model model) {
+        PagingDto<SimpleProjectDto> pagingDto = projectService.findLatestByPagingDto(queryDto);
+        List<List<SimpleProjectDto>> projectGrid = makeGrid(pagingDto.getElements(), 4);
+        model.addAttribute("pagingDto", pagingDto);
+        model.addAttribute("projectGrid", projectGrid);
         return "project/list";
     }
 
     @GetMapping("/imminent")
-    public String imminentProjects() {
+    public String imminentProjects(@ModelAttribute PagingQueryDto queryDto, Model model) {
+        PagingDto<SimpleProjectDto> pagingDto = projectService.findMostImminentByPagingDto(queryDto);
+        List<List<SimpleProjectDto>> projectGrid = makeGrid(pagingDto.getElements(), 4);
+        model.addAttribute("pagingDto", pagingDto);
+        model.addAttribute("projectGrid", projectGrid);
         return "project/list";
     }
 
