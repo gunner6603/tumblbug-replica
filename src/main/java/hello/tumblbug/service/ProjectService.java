@@ -1,9 +1,6 @@
 package hello.tumblbug.service;
 
-import hello.tumblbug.domain.Member;
-import hello.tumblbug.domain.MemberProject;
-import hello.tumblbug.domain.Project;
-import hello.tumblbug.domain.Reward;
+import hello.tumblbug.domain.*;
 import hello.tumblbug.dto.*;
 import hello.tumblbug.repository.MemberProjectRepository;
 import hello.tumblbug.repository.MemberRepository;
@@ -71,6 +68,12 @@ public class ProjectService {
 
     public PagingDto<SimpleProjectDto> findMostImminentByPagingDto(PagingQueryDto queryDto) {
         SimpleProjectDtoWithTotal dtoWithTotal = projectRepository.findAllNotExpiredSimpleByDeadlineAscWithOffsetLimit(queryDto.getOffset(), queryDto.getLimit(), true);
+        PagingDto<SimpleProjectDto> pagingDto = new PagingDto<>(queryDto.getPageNum(), queryDto.getLimit(), dtoWithTotal.getTotal(), dtoWithTotal.getDtos());
+        return pagingDto;
+    }
+
+    public PagingDto<SimpleProjectDto> findByCategory(Category category, PagingQueryDto queryDto) {
+        SimpleProjectDtoWithTotal dtoWithTotal = projectRepository.findAllSimpleByCategoryAndTimeDescWithOffsetLimit(category, queryDto.getOffset(), queryDto.getLimit(), true);
         PagingDto<SimpleProjectDto> pagingDto = new PagingDto<>(queryDto.getPageNum(), queryDto.getLimit(), dtoWithTotal.getTotal(), dtoWithTotal.getDtos());
         return pagingDto;
     }

@@ -126,7 +126,7 @@ public class ProjectController {
     @PostMapping("/{projectId}/sponsor/{rewardNum}")
     public String sponsorProject(@PathVariable Long projectId, @PathVariable Integer rewardNum, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) throws IOException {
         if (loginMember == null) {
-            return "redirect:/login";
+            return "redirect:/login?redirectURI=/project/{projectId}#option";
         }
         projectService.sponsorProject(loginMember.getId(), projectId, rewardNum);
         return "redirect:/project/{projectId}";

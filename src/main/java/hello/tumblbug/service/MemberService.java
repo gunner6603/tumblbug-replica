@@ -36,7 +36,6 @@ public class MemberService {
         Member member = memberRepository.findById(id);
         if (userImage != null) {
             member.setUserImage(userImage);
-            member.setUserImageStoreFileName(userImage.getStoreFileName());
         }
         member.setUsername(username);
         member.setPassword(password);

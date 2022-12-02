@@ -44,14 +44,12 @@ public class Member {
     @Embedded
     private UploadFile userImage;
 
-    public String userImageStoreFileName;
 
     public Member(String username, String loginId, String password) {
         this.username = username;
         this.loginId = loginId;
         this.password = password;
         this.userImage = new UploadFile(MemberConst.DEFAULT_USER_IMAGE_FILENAME, MemberConst.DEFAULT_USER_IMAGE_FILENAME);
-        this.userImageStoreFileName = MemberConst.DEFAULT_USER_IMAGE_FILENAME;
     }
 
     protected Member() {}

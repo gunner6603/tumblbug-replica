@@ -90,7 +90,7 @@ public class MemberController {
     @PostMapping("/{memberId}/follow")
     public String followMember(@PathVariable Long memberId, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, @RequestParam(defaultValue = "/") String redirectURI) {
         if (loginMember == null) {
-            return "redirect:/login";
+            return "redirect:/login?redirectURI=" + redirectURI;
         }
         try {
             memberService.followMember(loginMember.getId(), memberId);

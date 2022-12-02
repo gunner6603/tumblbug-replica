@@ -1,5 +1,6 @@
 package hello.tumblbug.repository;
 
+import hello.tumblbug.domain.Category;
 import hello.tumblbug.domain.Project;
 import hello.tumblbug.dto.SimpleProjectDto;
 import hello.tumblbug.dto.SimpleProjectDtoWithTotal;
@@ -90,6 +91,29 @@ public class ProjectRepository {
         simpleProjectDtoWithTotal.setDtos(resultList);
         if (needTotal) {
             Long total = em.createQuery("select count(p) from Project p", Long.class)
+                    .getSingleResult();
+            simpleProjectDtoWithTotal.setTotal(total);
+        }
+        return simpleProjectDtoWithTotal;
+    }
+
+    public SimpleProjectDtoWithTotal findAllSimpleByCategoryAndTimeDescWithOffsetLimit(Category category, int offset, int limit, boolean needTotal) {
+        SimpleProjectDtoWithTotal simpleProjectDtoWithTotal = new SimpleProjectDtoWithTotal();
+        List<SimpleProjectDto> resultList = em.createQuery(
+                        "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
+                                "from Project p join p.creator m " +
+                                "where p.category = :category " +
+                                "order by p.createdTime desc", SimpleProjectDto.class)
+                .setParameter("category", category)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+        simpleProjectDtoWithTotal.setDtos(resultList);
+        if (needTotal) {
+            Long total = em.createQuery(
+                    "select count(p) from Project p " +
+                            "where p.category = :category", Long.class)
+                    .setParameter("category", category)
                     .getSingleResult();
             simpleProjectDtoWithTotal.setTotal(total);
         }

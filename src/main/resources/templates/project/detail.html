@@ -77,8 +77,8 @@
                     </div>
                     <p class="card-text" th:text="*{creator.info}">벨망은 조향사와 디자이너가 함께하는 프로젝트 그룹입니다.</p>
                     <form th:action="@{/member/{memberId}/follow(memberId=*{creator.id})}" method="post">
-                        <input type="hidden" name="redirectURI" th:value="${#request.getRequestURI()}">
-                        <button class="btn btn-secondary" style="width: 100%" type="submit">+ 팔로우</button>
+                        <input type="hidden" name="redirectURI" th:value="|${#request.getRequestURI()}#followButton|">
+                        <button id="followButton" class="btn btn-secondary" style="width: 100%" type="submit">+ 팔로우</button>
                     </form>
                 </div>
             </div>
