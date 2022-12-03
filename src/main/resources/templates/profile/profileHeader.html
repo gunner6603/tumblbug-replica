@@ -20,7 +20,8 @@
         </div>
         <form th:action="@{/member/{memberId}/follow(memberId=${member.id})}" method="post">
             <input type="hidden" name="redirectURI" th:value="${#request.getRequestURI()}">
-            <button th:if="${#session != null and #session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER) != null and #session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER).id != member.id}" class="btn btn-danger me-4 mt-4" style="width: 180px; height: 40px" type="submit">+ 팔로우</button>
+            <button class="btn btn-danger me-4 mt-4" style="width: 180px; height: 40px" type="submit" th:if="${followButtonActive}">+ 팔로우</button>
+            <button class="btn btn-secondary me-4 mt-4" style="width: 180px; height: 40px" type="submit" th:if="${followingButtonActive}">&#x2713; 팔로잉</button>
         </form>
     </div>
     <hr>

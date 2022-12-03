@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
@@ -29,9 +30,10 @@ public class MemberController {
     private final FileStore fileStore;
 
     @GetMapping("/{memberId}")
-    public String profileMain(@PathVariable Long memberId, Model model) {
+    public String profileMain(@PathVariable Long memberId, Model model, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
         Member member = memberService.findOne(memberId);
         model.addAttribute("member", member);
+        followButtonControl(model, loginMember, memberId);
         return "profile/main";
     }
 
@@ -52,51 +54,68 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}/createdProject")
-    public String createdProjectList(@PathVariable Long memberId, Model model) {
+    public String createdProjectList(@PathVariable Long memberId, Model model, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
         Member member = memberService.findOne(memberId);
         List<SimpleProjectDto> createdProject = projectService.findCreatedProject(memberId);
         List<List<SimpleProjectDto>> projectGrid = ProjectController.makeGrid(createdProject, 4);
         model.addAttribute("member", member);
         model.addAttribute("projectNum", createdProject.size());
         model.addAttribute("projectGrid", projectGrid);
+        followButtonControl(model, loginMember, memberId);
         return "profile/createdProjects";
     }
 
     @GetMapping("/{memberId}/backedProject")
-    public String sponsoredProjectList(@PathVariable Long memberId, Model model) {
+    public String sponsoredProjectList(@PathVariable Long memberId, Model model, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
         Member member = memberService.findOne(memberId);
         List<SimpleProjectDto> sponsoredProject = projectService.findSponsoredProject(memberId);
         List<List<SimpleProjectDto>> projectGrid = ProjectController.makeGrid(sponsoredProject, 4);
         model.addAttribute("member", member);
         model.addAttribute("projectNum", sponsoredProject.size());
         model.addAttribute("projectGrid", projectGrid);
+        followButtonControl(model, loginMember, memberId);
         return "profile/backedProjects";
     }
 
     @GetMapping("/{memberId}/follower")
-    public String followerList(@PathVariable Long memberId, Model model) {
+    public String followerList(@PathVariable Long memberId, Model model, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
         Member member = memberService.findOne(memberId);
         model.addAttribute("member", member);
+        followButtonControl(model, loginMember, memberId);
         return "profile/follower";
     }
 
     @GetMapping("/{memberId}/following")
-    public String followingList(@PathVariable Long memberId, Model model) {
+    public String followingList(@PathVariable Long memberId, Model model, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
         Member member = memberService.findOne(memberId);
         model.addAttribute("member", member);
+        followButtonControl(model, loginMember, memberId);
         return "profile/following";
     }
 
     @PostMapping("/{memberId}/follow")
-    public String followMember(@PathVariable Long memberId, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, @RequestParam(defaultValue = "/") String redirectURI) {
+    public String followMember(@PathVariable Long memberId, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, @RequestParam(defaultValue = "/") String redirectURI, HttpServletResponse response) throws IOException {
         if (loginMember == null) {
             return "redirect:/login?redirectURI=" + redirectURI;
         }
-        try {
-            memberService.followMember(loginMember.getId(), memberId);
-        } catch (DataIntegrityViolationException e) {
-            log.info("Exception={}", e.getClass());
+        if (loginMember.getId() == memberId) {
+            response.sendError(404); //self-following not allowed
         }
+        memberService.followOrStopFollowingMember(loginMember.getId(), memberId);
         return "redirect:" + redirectURI;
+    }
+
+    public void followButtonControl(Model model, Member loginMember, Long profileMemberId) {
+        if (loginMember == null) {
+            model.addAttribute("followButtonActive", true);
+        } else if (loginMember.getId() == profileMemberId) {
+        } else {
+            boolean follows = memberService.follows(loginMember.getId(), profileMemberId);
+            if (follows) {
+                model.addAttribute("followingButtonActive", true);
+            } else {
+                model.addAttribute("followButtonActive", true);
+            }
+        }
     }
 }

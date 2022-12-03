@@ -11,9 +11,11 @@ import hello.tumblbug.dto.ProjectUploadDto;
 import hello.tumblbug.dto.SimpleProjectDto;
 import hello.tumblbug.file.FileStore;
 import hello.tumblbug.file.UploadFile;
+import hello.tumblbug.service.MemberService;
 import hello.tumblbug.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
@@ -40,6 +42,7 @@ public class ProjectController {
 
     private final ProjectService projectService;
     private final FileStore fileStore;
+    private final MemberService memberService;
 
     @GetMapping("/add")
     public String uploadForm(@ModelAttribute("form") ProjectUploadForm form, Model model) {
@@ -66,9 +69,20 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}")
-    public String projectDetail(@PathVariable Long projectId, Model model) {
+    public String projectDetail(@PathVariable Long projectId, Model model, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
         Project project = projectService.findOne(projectId);
         long leftDays = Duration.between(LocalDateTime.now(), project.getDeadline()).toDays();
+        if (loginMember == null) {
+            model.addAttribute("followButtonActive", true);
+        } else if (loginMember.getId() == project.getCreator().getId()) {
+        } else {
+            boolean follows = memberService.follows(loginMember.getId(), project.getCreator().getId());
+            if (follows) {
+                model.addAttribute("followingButtonActive", true);
+            } else {
+                model.addAttribute("followButtonActive", true);
+            }
+        }
         model.addAttribute("project", project);
         model.addAttribute("leftDays", leftDays);
         model.addAttribute("achievementRate", project.getAchievementRate());

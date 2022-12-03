@@ -43,9 +43,21 @@ public class MemberService {
         return member;
     }
 
-    public void followMember(Long followerId, Long followeeId) {
+    public int followOrStopFollowingMember(Long followerId, Long followeeId) {
         Member follower = memberRepository.findById(followerId);
         Member followee = memberRepository.findById(followeeId);
+        if (follower.getFollowings().contains(followee)) {
+            follower.getFollowings().remove(followee);
+            return 0;
+        }
         follower.getFollowings().add(followee);
+        return 1;
+        //return 1 if follower follows followee else return 0
+    }
+
+    public boolean follows(Long followerId, Long followeeId) {
+        Member follower = memberRepository.findById(followerId);
+        Member followee = memberRepository.findById(followeeId);
+        return follower.getFollowings().contains(followee);
     }
 }
