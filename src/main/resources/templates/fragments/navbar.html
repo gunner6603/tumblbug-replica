@@ -61,8 +61,8 @@
                                     <a class="nav-link active" style="color: black" aria-current="page" href="#" th:href="@{/project/imminent}"><strong>마감임박</strong></a>
                                 </li>
                             </ul>
-                            <form class="d-flex" role="search">
-                                <input class="form-control me-2 bg-light" type="search" placeholder="검색어를 입력해주세요." aria-label="Search" style="width: 180px; font-size:0.8em">
+                            <form class="d-flex" role="search" th:action="@{/project/search}" method="get">
+                                <input class="form-control me-2 bg-light" type="search" placeholder="검색어를 입력해주세요." aria-label="Search" style="width: 180px; font-size:0.8em" id="query" name="query" th:value="${param.get('query')}">
                                 <button class="btn btn-outline-dark" type="submit"><span style="font-size:0.8em">Search</span></button>
                             </form>
                         </div>

@@ -11,9 +11,12 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(@SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, Model model) {
+        /*
         if (loginMember != null) {
             model.addAttribute("member", loginMember);
         }
         return "home";
+         */
+        return "redirect:/project/home";
     }
 }

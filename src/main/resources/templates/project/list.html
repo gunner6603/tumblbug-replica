@@ -14,7 +14,11 @@
 <body>
 <div class="container-md">
     <div th:replace="~{fragments/navbar :: navbar}"></div>
-    <p class="my-4"><span class="text-danger" th:text="${pagingDto.getTotal()}">100</span>개의 프로젝트가 있습니다</p>
+    <p class="my-4">
+        <span th:if="${isSearchResultList} == true" th:text="|'${param.get('query')}' 검색 결과|" style="display: inline-block" class="mb-2">검색 결과</span>
+        <br th:if="${isSearchResultList} == true">
+        <span class="text-danger" th:text="${pagingDto.getTotal()}">100</span>개의 프로젝트가 있습니다.
+    </p>
     <div class="row" th:each="row : ${projectGrid}" th:if="${rowStat.count <= 4}">
         <div class="col-md-3" th:each="project : ${row}">
             <a href="#" th:href="@{|/project/${project.projectId}|}">

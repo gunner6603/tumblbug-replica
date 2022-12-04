@@ -1,12 +1,11 @@
 package hello.tumblbug.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class SimpleProjectDtoWithTotal {
+public class SimpleProjectDtosWithTotal {
 
     private List<SimpleProjectDto> dtos;
 

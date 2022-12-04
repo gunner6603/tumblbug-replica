@@ -146,6 +146,17 @@ public class ProjectController {
         return "redirect:/project/{projectId}";
     }
 
+    @GetMapping("/search")
+    public String searchProject(@RequestParam(defaultValue = "") String query, @ModelAttribute PagingQueryDto queryDto, Model model) {
+        PagingDto<SimpleProjectDto> pagingDto = projectService.search(queryDto, query);
+        List<List<SimpleProjectDto>> projectGrid = makeGrid(pagingDto.getElements(), 4);
+        model.addAttribute("pagingDto", pagingDto);
+        model.addAttribute("projectGrid", projectGrid);
+        model.addAttribute("isSearchResultList", true);
+        return "project/list";
+    }
+
+
     public static <T> List<List<T>> makeGrid(List<T> sequence, int colSize) {
         List<List<T>> projectGrid = new ArrayList<>();
         List<T> gridRow = new ArrayList<>();;

@@ -1,23 +1,35 @@
 package hello.tumblbug.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import hello.tumblbug.domain.Category;
 import hello.tumblbug.domain.Project;
+import hello.tumblbug.domain.QMember;
+import hello.tumblbug.domain.QProject;
+import hello.tumblbug.dto.QSimpleProjectDto;
 import hello.tumblbug.dto.SimpleProjectDto;
-import hello.tumblbug.dto.SimpleProjectDtoWithTotal;
-import lombok.RequiredArgsConstructor;
+import hello.tumblbug.dto.SimpleProjectDtosWithTotal;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static org.springframework.util.StringUtils.hasText;
+
 @Repository
 @Transactional
-@RequiredArgsConstructor
 public class ProjectRepository {
 
     private final EntityManager em;
+    private final JPAQueryFactory queryFactory;
+
+    public ProjectRepository(EntityManager em) {
+        this.em = em;
+        this.queryFactory = new JPAQueryFactory(em);
+    }
 
     public Long save(Project project) {
         em.persist(project);
@@ -38,8 +50,8 @@ public class ProjectRepository {
                 .getResultList();
     }
 
-    public SimpleProjectDtoWithTotal findAllSimpleByTimeDescWithOffsetLimit(int offset, int limit, boolean needTotal) {
-        SimpleProjectDtoWithTotal simpleProjectDtoWithTotal = new SimpleProjectDtoWithTotal();
+    public SimpleProjectDtosWithTotal findSimpleByTimeDescWithOffsetLimit(int offset, int limit, boolean needTotal) {
+        SimpleProjectDtosWithTotal simpleProjectDtosWithTotal = new SimpleProjectDtosWithTotal();
         List<SimpleProjectDto> resultList = em.createQuery(
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
                                 "from Project p join p.creator m " +
@@ -47,17 +59,17 @@ public class ProjectRepository {
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
-        simpleProjectDtoWithTotal.setDtos(resultList);
+        simpleProjectDtosWithTotal.setDtos(resultList);
         if (needTotal) {
             Long total = em.createQuery("select count(p) from Project p", Long.class)
                     .getSingleResult();
-            simpleProjectDtoWithTotal.setTotal(total);
+            simpleProjectDtosWithTotal.setTotal(total);
         }
-        return simpleProjectDtoWithTotal;
+        return simpleProjectDtosWithTotal;
     }
 
-    public SimpleProjectDtoWithTotal findAllNotExpiredSimpleByDeadlineAscWithOffsetLimit(int offset, int limit, boolean needTotal) {
-        SimpleProjectDtoWithTotal simpleProjectDtoWithTotal = new SimpleProjectDtoWithTotal();
+    public SimpleProjectDtosWithTotal findNotExpiredSimpleByDeadlineAscWithOffsetLimit(int offset, int limit, boolean needTotal) {
+        SimpleProjectDtosWithTotal simpleProjectDtosWithTotal = new SimpleProjectDtosWithTotal();
         List<SimpleProjectDto> resultList = em.createQuery(
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
                                 "from Project p join p.creator m " +
@@ -67,20 +79,20 @@ public class ProjectRepository {
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
-        simpleProjectDtoWithTotal.setDtos(resultList);
+        simpleProjectDtosWithTotal.setDtos(resultList);
         if (needTotal) {
             Long total = em.createQuery(
                     "select count(p) from Project p " +
                             "where p.deadline > :currentTime", Long.class)
                     .setParameter("currentTime", LocalDateTime.now())
                     .getSingleResult();
-            simpleProjectDtoWithTotal.setTotal(total);
+            simpleProjectDtosWithTotal.setTotal(total);
         }
-        return simpleProjectDtoWithTotal;
+        return simpleProjectDtosWithTotal;
     }
 
-    public SimpleProjectDtoWithTotal findAllSimpleByCurrentSponsorshipDescWithOffsetLimit(int offset, int limit, boolean needTotal) {
-        SimpleProjectDtoWithTotal simpleProjectDtoWithTotal = new SimpleProjectDtoWithTotal();
+    public SimpleProjectDtosWithTotal findSimpleByCurrentSponsorshipDescWithOffsetLimit(int offset, int limit, boolean needTotal) {
+        SimpleProjectDtosWithTotal simpleProjectDtosWithTotal = new SimpleProjectDtosWithTotal();
         List<SimpleProjectDto> resultList = em.createQuery(
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
                                 "from Project p join p.creator m " +
@@ -88,17 +100,17 @@ public class ProjectRepository {
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
-        simpleProjectDtoWithTotal.setDtos(resultList);
+        simpleProjectDtosWithTotal.setDtos(resultList);
         if (needTotal) {
             Long total = em.createQuery("select count(p) from Project p", Long.class)
                     .getSingleResult();
-            simpleProjectDtoWithTotal.setTotal(total);
+            simpleProjectDtosWithTotal.setTotal(total);
         }
-        return simpleProjectDtoWithTotal;
+        return simpleProjectDtosWithTotal;
     }
 
-    public SimpleProjectDtoWithTotal findAllSimpleByCategoryAndTimeDescWithOffsetLimit(Category category, int offset, int limit, boolean needTotal) {
-        SimpleProjectDtoWithTotal simpleProjectDtoWithTotal = new SimpleProjectDtoWithTotal();
+    public SimpleProjectDtosWithTotal findSimpleByCategoryAndTimeDescWithOffsetLimit(Category category, int offset, int limit, boolean needTotal) {
+        SimpleProjectDtosWithTotal simpleProjectDtosWithTotal = new SimpleProjectDtosWithTotal();
         List<SimpleProjectDto> resultList = em.createQuery(
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
                                 "from Project p join p.creator m " +
@@ -108,16 +120,16 @@ public class ProjectRepository {
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
-        simpleProjectDtoWithTotal.setDtos(resultList);
+        simpleProjectDtosWithTotal.setDtos(resultList);
         if (needTotal) {
             Long total = em.createQuery(
                     "select count(p) from Project p " +
                             "where p.category = :category", Long.class)
                     .setParameter("category", category)
                     .getSingleResult();
-            simpleProjectDtoWithTotal.setTotal(total);
+            simpleProjectDtosWithTotal.setTotal(total);
         }
-        return simpleProjectDtoWithTotal;
+        return simpleProjectDtosWithTotal;
     }
 
     public List<SimpleProjectDto> findAllSimpleByCreatorId(Long memberId) {
@@ -142,4 +154,48 @@ public class ProjectRepository {
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
+
+    public SimpleProjectDtosWithTotal findSimpleByQueryStringOnProjectTitleAndCreatorUsernameWithOffsetLimit(String query, int offset, int limit, boolean needTotal) {
+        SimpleProjectDtosWithTotal simpleProjectDtosWithTotal = new SimpleProjectDtosWithTotal();
+        QProject p = QProject.project;
+        QMember m = QMember.member;
+        List<SimpleProjectDto> resultList = queryFactory
+                .select(new QSimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship))
+                .from(p)
+                .join(p.creator, m)
+                .where(orCondition(projectTitleContains(query), memberUsernameContains(query)))
+                .orderBy(p.createdTime.desc())
+                .offset(offset)
+                .limit(limit)
+                .fetch();
+        simpleProjectDtosWithTotal.setDtos(resultList);
+        if (needTotal) {
+            Long total = queryFactory
+                    .select(p.count())
+                    .from(p)
+                    .join(p.creator, m)
+                    .where(orCondition(projectTitleContains(query), memberUsernameContains(query)))
+                    .fetchOne();
+            simpleProjectDtosWithTotal.setTotal(total);
+        }
+        return simpleProjectDtosWithTotal;
+    }
+
+    private BooleanExpression projectTitleContains(String query) {
+        QProject p = QProject.project;
+        return hasText(query) ? p.title.contains(query) : null;
+    }
+
+    private BooleanExpression memberUsernameContains(String query) {
+        QMember m = QMember.member;
+        return hasText(query) ? m.username.contains(query) : null;
+    }
+
+    private BooleanExpression orCondition(BooleanExpression e1, BooleanExpression e2) {
+        if (e1 == null) {
+            return e2;
+        }
+        return e1.or(e2);
+    }
+
 }

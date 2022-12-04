@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
                 .order(1)
-                .addPathPatterns("/member/{memberId}/edit"); //Get으로 호출 가능한 URL만 등록 -> 팔로우, 후원버튼은 Post만 가능하므로 제외
+                .addPathPatterns("/member/{memberId}/edit", "/project/add"); //Get으로 호출 가능한 URL만 등록 -> 팔로우, 후원버튼은 Post만 가능하므로 제외
 
         registry.addInterceptor(new NavProfileInterceptor())
                 .order(2)
