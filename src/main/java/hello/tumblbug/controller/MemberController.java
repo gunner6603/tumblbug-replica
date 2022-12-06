@@ -98,7 +98,7 @@ public class MemberController {
         if (loginMember == null) {
             return "redirect:/login?redirectURI=" + redirectURI;
         }
-        if (loginMember.getId() == memberId) {
+        if (loginMember.getId().equals(memberId)) {
             response.sendError(404); //self-following not allowed
         }
         memberService.followOrStopFollowingMember(loginMember.getId(), memberId);
@@ -108,7 +108,7 @@ public class MemberController {
     public void followButtonControl(Model model, Member loginMember, Long profileMemberId) {
         if (loginMember == null) {
             model.addAttribute("followButtonActive", true);
-        } else if (loginMember.getId() == profileMemberId) {
+        } else if (loginMember.getId().equals(profileMemberId)) {
         } else {
             boolean follows = memberService.follows(loginMember.getId(), profileMemberId);
             if (follows) {

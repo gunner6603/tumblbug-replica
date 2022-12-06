@@ -14,7 +14,7 @@
         <div>
             <img class="rounded-circle mx-2" width="80" height="80" src="/static/image/defaultUserImage.png" th:src="|/project/images/${member.userImage.storeFileName}|">
             <span style="display: inline-block; margin-left: 13px; font-size: 19px; font-weight: bold" th:text="${member.username}">username</span>
-            <a th:if="${#session != null and #session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER) != null and #session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER).id == member.id}" href="#" th:href="@{/member/{memberId}/edit(memberId=${member.id})}">
+            <a th:if="${#session != null and #session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER) != null and #session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER).id.equals(member.id)}" href="#" th:href="@{/member/{memberId}/edit(memberId=${member.id})}">
                 <img class="rounded-circle mx-2" width="25" height="25" src="/static/image/settings.png" th:src="@{/image/settings.png}">
             </a>
         </div>

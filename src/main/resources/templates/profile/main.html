@@ -30,11 +30,6 @@
             </li>
         </ul>
         <div class="my-4">
-            <!--
-            <div class="mb-2">
-                <a class="btn btn-outline-dark bg-light px-2 py-1 fw-bold" style="font-size: 14px" href="#" th:href="@{/member/{memberId}/edit(memberId=${member.id})}" th:if="${#session != null and #session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER) != null and #session.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER).id == member.id}" role="button">소개 등록/변경</a>
-            </div>
-            -->
             <p style="font-size: 15px" th:text="${member.info}">
             안녕하세요
             </p>
