@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <script th:src="@{/js/bootstrap.bundle.js}" src="/static/js/bootstrap.bundle.js"></script>
+    <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container-md">
+    <th:block th:fragment="info">
+        <div class="py-4 mb-3">
+            <div class="text-center my-3 fs-4">
+                <a class="badge text-secondary" style="background-color: #dddddd" href="#" th:href="@{/project/category/{categoryName}(categoryName=*{category.name()})}" th:text="*{category.description}">굿즈</a>
+            </div>
+            <h1 class="text-center fw-bold" th:text="*{title}">조향사가 직접 만든 천연 퍼퓸 샴푸와 비누</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-7 px-5 my-auto">
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="/static/image/mainImage.png" th:src="|/project/images/*{mainImage.storeFileName}|" class="d-block w-100" height="500" alt="mainImage">
+                        </div>
+                        <div class="carousel-item" th:each="subImage : *{subImages}">
+                            <img src="/image/defaultUserImage.png" th:src="|/project/images/${subImage.storeFileName}|" class="d-block w-100" height="500" th:alt="|subImage${subImageStat.count}|" >
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-5 px-5 pt-3" style="font-size: 1em">
+                모인금액<br/>
+                <span style="font-size: 2.5em" th:text="*{{currentSponsorship}}">10,000,000</span> 원&nbsp;&nbsp;
+                <span style="font-size: 1.5em; font-weight: bold" th:text="|${achievementRate}%|">400%</span><br/><br/>
+                남은시간<br/>
+                <span style="font-size: 2.5em" th:text="${leftDays}">22</span> 일<br/><br/>
+                후원자<br/>
+                <span style="font-size: 2.5em" th:text="${#lists.size(project.memberProjects)}">364</span> 명<br/>
+                <hr class="my-4">
+                <div class="row">
+                    <div class="col-4 my-1 fw-bold">
+                        목표금액
+                    </div>
+                    <div class="col-8 my-1" th:text="|*{{targetSponsorship}}원|">
+                        2,500,000원
+                    </div>
+                    <div class="col-4 my-1 fw-bold">
+                        펀딩 기간
+                    </div>
+                    <div class="col-8 my-1">
+                        <span th:text="*{{createdTime}}">2022.11.18</span> ~ <span th:text="*{{deadline}}">2022.12.13</span>
+                    </div>
+                </div>
+                <div class="d-grid col-10 mx-auto my-3">
+                    <button class="btn btn-danger fw-bold" style="height: 4em" type="button" th:onclick="location.href='#option'">이 프로젝트 후원하기</button>
+                </div>
+            </div>
+        </div>
+        <hr class="mt-5 mb-3">
+    </th:block>
+</div> <!-- /container -->
+</body>
+</html>
+

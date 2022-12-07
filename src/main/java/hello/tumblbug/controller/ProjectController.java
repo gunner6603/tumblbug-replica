@@ -15,7 +15,6 @@ import hello.tumblbug.service.MemberService;
 import hello.tumblbug.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Session;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
@@ -23,9 +22,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.Duration;
@@ -86,7 +82,7 @@ public class ProjectController {
         model.addAttribute("project", project);
         model.addAttribute("leftDays", leftDays);
         model.addAttribute("achievementRate", project.getAchievementRate());
-        return "project/detail";
+        return "project/detail/main";
     }
 
     @ResponseBody
