@@ -18,4 +18,13 @@ public class CommunityPostRepository {
         em.persist(communityPost);
         return communityPost.getId();
     }
+
+    public CommunityPost findById(Long id) {
+        return em.find(CommunityPost.class, id);
+    }
+
+    public void deleteById(Long id) {
+        CommunityPost communityPost = findById(id);
+        em.remove(communityPost);
+    }
 }

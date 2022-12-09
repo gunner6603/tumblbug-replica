@@ -110,4 +110,12 @@ public class ProjectService {
         CommunityPost communityPost = new CommunityPost(project, author, content);
         communityPostRepository.save(communityPost);
     }
+
+    public void deleteCommunityPost(Long postId) {
+        communityPostRepository.deleteById(postId);
+    }
+
+    public CommunityPost findCommunityPost(Long postId) {
+        return communityPostRepository.findById(postId);
+    }
 }

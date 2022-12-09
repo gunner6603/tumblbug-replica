@@ -34,7 +34,7 @@ public class LoginController {
     }
 
     @PostMapping("/signup")
-    public String signup(@Valid @ModelAttribute("signupForm") SignupForm form, BindingResult bindingResult) {
+    public String signup(@Valid @ModelAttribute("signupForm") SignupForm form, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURI) {
         if (bindingResult.hasErrors()) {
             return "login/signupForm";
         }
@@ -43,7 +43,7 @@ public class LoginController {
             bindingResult.reject("duplicateLoginId");
             return "login/signupForm";
         }
-        return "redirect:/";
+        return "redirect:" + redirectURI;
     }
 
 
@@ -69,11 +69,11 @@ public class LoginController {
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    public String logout(HttpServletRequest request, @RequestParam(defaultValue = "/") String redirectURI) {
         HttpSession session = request.getSession(false);
         if (session != null) {
             session.invalidate();
         }
-        return "redirect:/";
+        return "redirect:" + redirectURI;
     }
 }

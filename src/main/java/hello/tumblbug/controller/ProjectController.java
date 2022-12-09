@@ -2,10 +2,7 @@ package hello.tumblbug.controller;
 
 import hello.tumblbug.controller.form.CommunityPostForm;
 import hello.tumblbug.controller.form.ProjectUploadForm;
-import hello.tumblbug.domain.Category;
-import hello.tumblbug.domain.Member;
-import hello.tumblbug.domain.Project;
-import hello.tumblbug.domain.Reward;
+import hello.tumblbug.domain.*;
 import hello.tumblbug.dto.PagingDto;
 import hello.tumblbug.dto.PagingQueryDto;
 import hello.tumblbug.dto.ProjectUploadDto;
@@ -23,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.Duration;
@@ -183,6 +181,17 @@ public class ProjectController {
     @PostMapping("/{projectId}/community/add")
     public String addCommunityPost(@PathVariable Long projectId, @SessionAttribute(value = SessionConst.LOGIN_MEMBER) Member loginMember, @ModelAttribute("form") CommunityPostForm form) {
         projectService.addCommunityPost(projectId, loginMember.getId(), form.getContent());
+        return "redirect:/project/{projectId}/community";
+    }
+
+    @PostMapping("/{projectId}/community/{postId}/delete")
+    public String deleteCommunityPost(@PathVariable Long projectId, @PathVariable Long postId, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, HttpServletResponse response) throws IOException {
+        CommunityPost communityPost = projectService.findCommunityPost(postId);
+        if (loginMember == null || !loginMember.getId().equals(communityPost.getAuthor().getId())) {
+            response.sendError(403);
+        } else {
+            projectService.deleteCommunityPost(postId);
+        }
         return "redirect:/project/{projectId}/community";
     }
 

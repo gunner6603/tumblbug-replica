@@ -71,6 +71,9 @@ public class Project {
     }
 
     public int getAchievementRate() {
+        if (targetSponsorship == 0) {
+            return 0;
+        }
         return currentSponsorship * 100 / targetSponsorship;
     }
 

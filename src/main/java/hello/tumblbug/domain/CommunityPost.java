@@ -26,6 +26,7 @@ public class CommunityPost {
 
     private String content;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime createDate;
 
     public CommunityPost(Project project, Member author, String content) {

@@ -15,8 +15,16 @@
     </style>
 </head>
 <body>
-<div class="container">
-    <th:block th:fragment="postAddForm">
+<div class="container-md">
+    <div th:fragment="postAddForm">
+        <ul class="nav nav-tabs" id="nav-tab">
+            <li class="nav-item">
+                <a class="nav-link text-secondary fw-bold" aria-current="page" href="#" th:href="@{/project/{projectId}#nav-tab(projectId=${project.id})}">프로젝트 계획</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active text-dark fw-bold">커뮤니티</a>
+            </li>
+        </ul>
         <div class="py-5 text-center">
             <h2>게시글 등록</h2>
         </div>
@@ -47,7 +55,7 @@
             </div>
         </form>
         <hr class="my-4">
-    </th:block>
+    </div>
 </div> <!-- /container -->
 </body>
 </html>

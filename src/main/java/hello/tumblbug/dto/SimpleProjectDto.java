@@ -36,6 +36,10 @@ public class SimpleProjectDto { //목록 출력용 DTO : 프로젝트에 대한 
         this.mainImageStoreFileName = mainImageStoreFileName;
         this.targetSponsorship = targetSponsorship;
         this.currentSponsorship = currentSponsorship;
-        this.achievementRate = currentSponsorship * 100 / targetSponsorship;
+        if (targetSponsorship == 0) {
+            this.achievementRate = 0;
+        } else {
+            this.achievementRate = currentSponsorship * 100 / targetSponsorship;
+        }
     }
 }
