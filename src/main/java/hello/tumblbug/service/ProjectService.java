@@ -2,6 +2,7 @@ package hello.tumblbug.service;
 
 import hello.tumblbug.domain.*;
 import hello.tumblbug.dto.*;
+import hello.tumblbug.repository.CommunityPostRepository;
 import hello.tumblbug.repository.MemberProjectRepository;
 import hello.tumblbug.repository.MemberRepository;
 import hello.tumblbug.repository.ProjectRepository;
@@ -21,6 +22,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final MemberRepository memberRepository;
     private final MemberProjectRepository memberProjectRepository;
+    private final CommunityPostRepository communityPostRepository;
 
     public Long createProject(ProjectUploadDto dto) {
         Project project = new Project();
@@ -100,5 +102,12 @@ public class ProjectService {
     public PagingDto<SimpleProjectDto> search(PagingQueryDto queryDto, String query) {
         SimpleProjectDtosWithTotal dtoWithTotal = projectRepository.findSimpleByQueryStringOnProjectTitleAndCreatorUsernameWithOffsetLimit(query, queryDto.getOffset(), queryDto.getLimit(), true);
         return new PagingDto<SimpleProjectDto>(queryDto.getPageNum(), queryDto.getLimit(), dtoWithTotal.getTotal(), dtoWithTotal.getDtos());
+    }
+
+    public void addCommunityPost(Long projectId, Long authorId, String content) {
+        Project project = projectRepository.findById(projectId);
+        Member author = memberRepository.findById(authorId);
+        CommunityPost communityPost = new CommunityPost(project, author, content);
+        communityPostRepository.save(communityPost);
     }
 }

@@ -1,7 +1,9 @@
 package hello.tumblbug.domain;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,6 +11,7 @@ import java.util.Date;
 
 @Entity
 @Getter @Setter
+@NoArgsConstructor
 public class CommunityPost {
 
     @Id @GeneratedValue
@@ -24,4 +27,11 @@ public class CommunityPost {
     private String content;
 
     private LocalDateTime createDate;
+
+    public CommunityPost(Project project, Member author, String content) {
+        this.project = project;
+        this.author = author;
+        this.content = content;
+        this.createDate = LocalDateTime.now();
+    }
 }

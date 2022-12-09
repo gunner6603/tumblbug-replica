@@ -14,12 +14,12 @@
 <body>
     <div class="container-md">
         <div th:fragment="description">
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" id="nav-tab">
                 <li class="nav-item">
-                    <a class="nav-link active text-dark fw-bold" aria-current="page" href="#">프로젝트 계획</a>
+                    <a class="nav-link active text-dark fw-bold" aria-current="page">프로젝트 계획</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-secondary fw-bold" href="#">커뮤니티</a>
+                    <a class="nav-link text-secondary fw-bold" href="#" th:href="@{/project/{projectId}/community#nav-tab(projectId=${project.id})}">커뮤니티</a>
                 </li>
             </ul>
             <div class="row">

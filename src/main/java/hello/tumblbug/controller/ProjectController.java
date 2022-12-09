@@ -1,5 +1,6 @@
 package hello.tumblbug.controller;
 
+import hello.tumblbug.controller.form.CommunityPostForm;
 import hello.tumblbug.controller.form.ProjectUploadForm;
 import hello.tumblbug.domain.Category;
 import hello.tumblbug.domain.Member;
@@ -67,7 +68,19 @@ public class ProjectController {
     @GetMapping("/{projectId}")
     public String projectDetail(@PathVariable Long projectId, Model model, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
         Project project = projectService.findOne(projectId);
+        model.addAttribute("project", project);
+        addFollowButtonInfoToModel(model, loginMember, project);
+        addProjectInfoToModel(model, project);
+        return "project/detail/main";
+    }
+
+    private void addProjectInfoToModel(Model model, Project project) {
         long leftDays = Duration.between(LocalDateTime.now(), project.getDeadline()).toDays();
+        model.addAttribute("leftDays", leftDays);
+        model.addAttribute("achievementRate", project.getAchievementRate());
+    }
+
+    private void addFollowButtonInfoToModel(Model model, Member loginMember, Project project) {
         if (loginMember == null) {
             model.addAttribute("followButtonActive", true);
         } else if (loginMember.getId() == project.getCreator().getId()) {
@@ -79,10 +92,6 @@ public class ProjectController {
                 model.addAttribute("followButtonActive", true);
             }
         }
-        model.addAttribute("project", project);
-        model.addAttribute("leftDays", leftDays);
-        model.addAttribute("achievementRate", project.getAchievementRate());
-        return "project/detail/main";
     }
 
     @ResponseBody
@@ -150,6 +159,31 @@ public class ProjectController {
         model.addAttribute("projectGrid", projectGrid);
         model.addAttribute("isSearchResultList", true);
         return "project/list";
+    }
+
+
+    @GetMapping("/{projectId}/community")
+    public String communityPostList(@PathVariable Long projectId, Model model, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
+        Project project = projectService.findOne(projectId);
+        model.addAttribute("project", project);
+        addFollowButtonInfoToModel(model, loginMember, project);
+        addProjectInfoToModel(model, project);
+        return "project/detail/communityPostList";
+    }
+
+    @GetMapping("/{projectId}/community/add")
+    public String communityPostAddForm(@PathVariable Long projectId, @ModelAttribute("form") CommunityPostForm form, Model model, @SessionAttribute(value = SessionConst.LOGIN_MEMBER) Member loginMember) {
+        Project project = projectService.findOne(projectId);
+        model.addAttribute("project", project);
+        addFollowButtonInfoToModel(model, loginMember, project);
+        addProjectInfoToModel(model, project);
+        return "project/detail/communityPostAddForm";
+    }
+
+    @PostMapping("/{projectId}/community/add")
+    public String addCommunityPost(@PathVariable Long projectId, @SessionAttribute(value = SessionConst.LOGIN_MEMBER) Member loginMember, @ModelAttribute("form") CommunityPostForm form) {
+        projectService.addCommunityPost(projectId, loginMember.getId(), form.getContent());
+        return "redirect:/project/{projectId}/community";
     }
 
 
