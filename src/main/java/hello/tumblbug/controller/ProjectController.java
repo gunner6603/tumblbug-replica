@@ -55,7 +55,7 @@ public class ProjectController {
         Reward reward1 = new Reward(form.getReward1Price(), form.getReward1Description());
         Reward reward2 = new Reward(form.getReward2Price(), form.getReward2Description());
 
-        ProjectUploadDto projectUploadDto = new ProjectUploadDto(form.getTitle(), form.getCategory(), loginMember, mainImage, subImages, form.getDescription(), form.getTargetSponsorship(), reward1, reward2, form.getDeadline());
+        ProjectUploadDto projectUploadDto = new ProjectUploadDto(form.getTitle(), form.getCategory(), loginMember, mainImage, subImages, form.getDescription(), form.getTargetSponsorship(), reward1, reward2, form.getDeadlineDate().atTime(23, 59, 59));
 
         Long projectId = projectService.createProject(projectUploadDto);
         redirectAttributes.addAttribute("projectId", projectId);

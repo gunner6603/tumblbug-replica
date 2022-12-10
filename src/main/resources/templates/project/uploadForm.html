@@ -95,11 +95,11 @@
             <div class="field-error" th:errors="*{reward2Description}" />
         </div>
         <div>
-            <label for="deadline">마감기한</label>
-            <input type="text" id="deadline" th:field="*{deadline}"
+            <label for="deadline">마감기한 (예시 : 2023-01-01)</label>
+            <input type="text" id="deadline" th:field="*{deadlineDate}"
                    class="form-control"
                    th:errorclass="field-error">
-            <div class="field-error" th:errors="*{deadline}" />
+            <div class="field-error" th:errors="*{deadlineDate}" />
         </div>
 
         <hr class="my-4">

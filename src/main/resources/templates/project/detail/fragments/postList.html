@@ -34,7 +34,7 @@
                     <div class="p-2" style="font-size: 15px;" th:object="${post}">
                         <img src="/static/image/defaultUserImage.png" th:src="|/project/images/*{author.userImage.storeFileName}|" class="rounded-circle" width="40" height="40">
                         <span class="fw-bold d-inline-block ms-2" th:text="*{author.username}">사용자명</span>
-                        <p class="pt-3" th:text="*{content}">
+                        <p class="pt-3" style="white-space: pre-line; word-break: break-all;" th:text="*{content}">
                             포스트 내용
                         </p>
                         <p class="text-secondary float-start" th:text="*{{createDate}}">2022.12.07</p>

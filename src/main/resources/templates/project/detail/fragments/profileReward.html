@@ -25,7 +25,7 @@
                         <img class="rounded-circle mx-1" width="40" height="40" src="/static/image/defaultUserImage.png" th:src="|/project/images/*{creator.userImage.storeFileName}|">
                         <a class="text-black mx-2 fw-bold" th:text="*{creator.username}" href="#" th:href="@{/member/{memberId}(memberId=*{creator.id})}">벨망</a>
                     </div>
-                    <p class="card-text" th:text="*{creator.info}">벨망은 조향사와 디자이너가 함께하는 프로젝트 그룹입니다.</p>
+                    <p class="card-text" style="white-space: pre-line;" th:text="*{creator.info}">벨망은 조향사와 디자이너가 함께하는 프로젝트 그룹입니다.</p>
                     <form id="followButton" th:action="@{/member/{memberId}/follow(memberId=*{creator.id})}" method="post">
                         <input type="hidden" name="redirectURI" th:value="|${#request.getRequestURI()}#followButton|">
                         <button class="btn btn-secondary" style="width: 100%" type="submit" th:if="${followButtonActive}">+ 팔로우</button>

@@ -12,6 +12,13 @@
             border-color: #dc3545;
             color: #dc3545;
         }
+        a {
+            text-decoration: none;
+            color: black;
+        }
+        a:hover {
+            color: gray;
+        }
     </style>
 </head>
 <body>
@@ -22,40 +29,55 @@
                 <a class="nav-link text-secondary fw-bold" aria-current="page" href="#" th:href="@{/project/{projectId}#nav-tab(projectId=${project.id})}">프로젝트 계획</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active text-dark fw-bold">커뮤니티</a>
+                <a class="nav-link active text-dark fw-bold" th:href="@{/project/{projectId}/community#nav-tab(projectId=${project.id})}">커뮤니티</a>
             </li>
         </ul>
-        <div class="py-5 text-center">
-            <h2>게시글 등록</h2>
-        </div>
         <form th:action th:object="${form}" method="post">
-            <div th:if="${#fields.hasGlobalErrors()}">
-                <p class="field-error" th:each="err : ${#fields.globalErrors()}"
-                   th:text="${err}">전체 오류 메시지</p>
-            </div>
-            <div>
-                <label for="description">게시글 내용</label>
-                <textarea id="description" th:field="*{content}"
-                          class="form-control" rows="10"
-                          th:errorclass="field-error">
-                </textarea>
-                <div class="field-error" th:errors="*{content}" />
-            </div>
-            <hr class="my-4">
             <div class="row">
-                <div class="col">
-                    <button class="w-100 btn btn-primary btn-lg" type="submit">
-                        등록하기</button>
+                <div class="col-md-7 px-3 py-4">
+                    <div class="mb-5">
+                        <a href="#" th:href="@{/project/{projectId}/community#nav-tab(projectId=${project.id})}">
+                            <div class="d-flex mb-2" style="align-items: center; width: 140px; height: 30px">
+                                <img class="me-2" src="/static/image/backicon.png" th:src="@{/image/backicon.png}" style="width: 16px;height: 16px"><span class="fw-bold text-black">게시글 작성</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div th:if="${#fields.hasGlobalErrors()}">
+                        <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+                           th:text="${err}">전체 오류 메시지</p>
+                    </div>
+                    <!--/*/
+                    <div>
+                        <textarea th:field="*{content}"
+                                  class="form-control p-3" rows="22" style="font-size: 15px"
+                                  th:errorclass="field-error"
+                                  placeholder="프로젝트 및 창작자님에 대해 어떤 이야기가 하고 싶으신가요?"></textarea>
+                        <div class="field-error" th:errors="*{content}" />
+                    </div>
+                    /*/-->
+                    <hr class="my-4">
                 </div>
-                <div class="col">
-                    <button class="w-100 btn btn-secondary btn-lg"
-                            th:onclick="|location.href='@{/project/{projectId}/community#nav-tab(projectId=${project.id})}'|"
-                            type="button">취소</button>
+                <div class="col-md-5 px-5 my-4">
+                    <button class="btn btn-danger mt-3 me-3" style="font-size: 13px; width: 170px; height: 42px; border-radius: 0px; float:right" type="submit">등록</button>
+                    <div class="pt-5 me-3" style="clear: right; font-size: 14px">
+                        <p>
+                        후원하신 프로젝트 창작자에게 응원의 한마디를 남겨주세요. 창작자에게 후원금만큼 큰 힘이 됩니다.
+                        </p>
+                        <div class="mt-4 p-3 bg-light">
+                            <p class="fw-bold">
+                                유의사항
+                            </p>
+                            <ul style="line-height: 180%">
+                                <li>창작자에게 궁금하신 점이 있다면 ‘창작자에게 문의'로 질문해주세요.</li>
+                                <li>텀블벅 커뮤니티 운영원칙을 준수해주세요. 프로젝트와 무관한 내용이나 광고, 도배, 욕설, 혐오 조장, 외설, 사칭 등은 예고 없이 삭제될 수 있습니다.</li>
+                                <li>운영원칙 위반 누적시 텀블벅 이용이 제한될 수 있으며, 타인에 대한 모욕이나 명예훼손 등의 경우 법적 책임이 발생할 수도 있습니다.</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
-        <hr class="my-4">
     </div>
-</div> <!-- /container -->
+</div>
 </body>
 </html>
