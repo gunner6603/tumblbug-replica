@@ -48,11 +48,12 @@
                     </div>
                     <!--/*/
                     <div>
+                        <div class="field-error mb-2" th:errors="*{content}" />
                         <textarea th:field="*{content}"
                                   class="form-control p-3" rows="22" style="font-size: 15px"
                                   th:errorclass="field-error"
                                   placeholder="프로젝트 및 창작자님에 대해 어떤 이야기가 하고 싶으신가요?"></textarea>
-                        <div class="field-error" th:errors="*{content}" />
+
                     </div>
                     /*/-->
                     <hr class="my-4">

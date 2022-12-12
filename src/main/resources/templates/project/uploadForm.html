@@ -39,14 +39,15 @@
                 BOOK
             </label>
         </div>
+        <div class="field-error" th:errors="*{category}" />
         <div>
-            <label for="mainImage">메인 이미지</label>
+            <label for="mainImage">메인 이미지 (파일 최대크기 : <span th:text="#{maximum.fileSize}"></span>)</label>
             <input type="file" id="mainImage" th:field="*{mainImage}" class="form-control"
                    th:errorclass="field-error">
             <div class="field-error" th:errors="*{mainImage}" />
         </div>
         <div>
-            <label for="subImages">서브 이미지</label>
+            <label for="subImages">서브 이미지 (최대 3장까지 등록 가능, 파일 1개당 최대크기 : <span th:text="#{maximum.fileSize}"></span>)</label>
             <input type="file" multiple="multiple" id="subImages" th:field="*{subImages}" class="form-control"
                    th:errorclass="field-error">
             <div class="field-error" th:errors="*{subImages}" />

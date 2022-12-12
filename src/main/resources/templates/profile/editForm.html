@@ -25,7 +25,7 @@
                th:text="${err}">전체 오류 메시지</p>
         </div>
         <div>
-            <label for="userImage">프로필 이미지</label>
+            <label for="userImage">프로필 이미지 (파일 최대크기 : <span th:text="#{maximum.fileSize}"></span>)</label>
             <input type="file" id="userImage" th:field="*{userImage}" class="form-control"
                    th:errorclass="field-error">
             <div class="field-error" th:errors="*{userImage}" />
@@ -59,7 +59,7 @@
             </div>
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"
-                        th:onclick="|location.href='@{/member/{memberId}(memberId=${member.id)'|"
+                        th:onclick="|location.href='@{/member/{memberId}(memberId=${memberId})}'|"
                         type="button">취소</button>
             </div>
         </div>

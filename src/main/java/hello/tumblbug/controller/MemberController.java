@@ -11,11 +11,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
@@ -46,14 +48,20 @@ public class MemberController {
     }
 
     @PostMapping("/{memberId}/edit")
-    public String profileEdit(@PathVariable Long memberId, @ModelAttribute("form") MemberEditForm form, @SessionAttribute(SessionConst.LOGIN_MEMBER) Member loginMember, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String profileEdit(@PathVariable Long memberId, @Valid @ModelAttribute("form") MemberEditForm form, BindingResult bindingResult, @SessionAttribute(SessionConst.LOGIN_MEMBER) Member loginMember, HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!loginMember.getId().equals(memberId)) {
             response.sendError(403);
-        } else {
-            Member member = memberService.updateMember(memberId, fileStore.storeFile(form.getUserImage()), form.getUsername(), form.getPassword(), form.getInfo());
-            HttpSession session = request.getSession(false);
-            session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+            return "redirect:/";
         }
+
+        if (bindingResult.hasErrors()) {
+            return "profile/editForm";
+        }
+
+        Member member = memberService.updateMember(memberId, fileStore.storeFile(form.getUserImage()), form.getUsername(), form.getPassword(), form.getInfo());
+        HttpSession session = request.getSession(false);
+        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+
         return "redirect:/member/{memberId}";
     }
 

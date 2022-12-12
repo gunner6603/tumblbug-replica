@@ -17,13 +17,17 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -46,8 +50,23 @@ public class ProjectController {
     }
 
     @PostMapping("/add")
-    public String upload(@ModelAttribute("form") ProjectUploadForm form, @SessionAttribute(value = SessionConst.LOGIN_MEMBER) Member loginMember, RedirectAttributes redirectAttributes) throws IOException {
+    public String upload(@Valid @ModelAttribute("form") ProjectUploadForm form, BindingResult bindingResult, @SessionAttribute(value = SessionConst.LOGIN_MEMBER) Member loginMember, RedirectAttributes redirectAttributes, Model model) throws IOException {
+
         log.info("form={}", form);
+
+        if (form.getMainImage().isEmpty()) {
+            bindingResult.rejectValue("mainImage", "empty");
+        }
+
+        if (form.getDeadlineDate() != null && form.getDeadlineDate().isBefore(LocalDate.now())) {
+            bindingResult.rejectValue("deadlineDate", "passedDate");
+        }
+
+        if (bindingResult.hasErrors()) {
+            log.info("bindingResult={}", bindingResult);
+            model.addAttribute("categories", Category.values());
+            return "project/uploadForm";
+        }
 
         UploadFile mainImage = fileStore.storeFile(form.getMainImage());
         List<UploadFile> subImages = fileStore.storeFiles(form.getSubImages());
@@ -179,7 +198,14 @@ public class ProjectController {
     }
 
     @PostMapping("/{projectId}/community/add")
-    public String addCommunityPost(@PathVariable Long projectId, @SessionAttribute(value = SessionConst.LOGIN_MEMBER) Member loginMember, @ModelAttribute("form") CommunityPostForm form) {
+    public String addCommunityPost(@PathVariable Long projectId, @SessionAttribute(value = SessionConst.LOGIN_MEMBER) Member loginMember, @Valid @ModelAttribute("form") CommunityPostForm form, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            Project project = projectService.findOne(projectId);
+            model.addAttribute("project", project);
+            addFollowButtonInfoToModel(model, loginMember, project);
+            addProjectInfoToModel(model, project);
+            return "project/detail/communityPostAddForm";
+        }
         projectService.addCommunityPost(projectId, loginMember.getId(), form.getContent());
         return "redirect:/project/{projectId}/community";
     }

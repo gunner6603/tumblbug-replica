@@ -19,19 +19,17 @@ import java.util.List;
 @Data
 public class ProjectUploadForm {
 
-    @NotEmpty
-    @Size(max = 40)
+    @Size(min = 5, max = 40)
     private String title;
 
     @NotNull
     private Category category;
 
-    @NotNull
     private MultipartFile mainImage;
 
+    @Size(min = 0, max = 3)
     private List<MultipartFile> subImages = new ArrayList<>();
 
-    @NotEmpty
     @Size(min = 10, max = 2000)
     private String description;
 
@@ -41,18 +39,16 @@ public class ProjectUploadForm {
     @Range(min = 1000, max = 100000000)
     private int reward1Price;
 
-    @NotEmpty
-    @Size(max = 500)
+    @Size(min = 10, max = 500)
     private String reward1Description;
 
     @Range(min = 1000, max = 100000000)
     private int reward2Price;
 
-    @NotEmpty
-    @Size(max = 500)
+    @Size(min = 10, max = 500)
     private String reward2Description;
 
-    @NotEmpty
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate deadlineDate;
 }
