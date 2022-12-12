@@ -46,10 +46,14 @@ public class MemberController {
     }
 
     @PostMapping("/{memberId}/edit")
-    public String profileEdit(@PathVariable Long memberId, @ModelAttribute("form") MemberEditForm form, HttpServletRequest request) throws IOException {
-        Member member = memberService.updateMember(memberId, fileStore.storeFile(form.getUserImage()), form.getUsername(), form.getPassword(), form.getInfo());
-        HttpSession session = request.getSession(false);
-        session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+    public String profileEdit(@PathVariable Long memberId, @ModelAttribute("form") MemberEditForm form, @SessionAttribute(SessionConst.LOGIN_MEMBER) Member loginMember, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (!loginMember.getId().equals(memberId)) {
+            response.sendError(403);
+        } else {
+            Member member = memberService.updateMember(memberId, fileStore.storeFile(form.getUserImage()), form.getUsername(), form.getPassword(), form.getInfo());
+            HttpSession session = request.getSession(false);
+            session.setAttribute(SessionConst.LOGIN_MEMBER, member);
+        }
         return "redirect:/member/{memberId}";
     }
 
