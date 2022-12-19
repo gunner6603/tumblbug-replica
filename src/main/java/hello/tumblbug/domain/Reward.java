@@ -17,6 +17,7 @@ public class Reward {
     @NumberFormat(pattern = "###,###")
     private int price;
 
+    @Column(length = DBConst.REWARD_DESCRIPTION_MAX_LENGTH)
     private String description;
 
     private int salesCount;
@@ -30,5 +31,9 @@ public class Reward {
     }
 
     public Reward() {
+    }
+
+    public void increaseSalesCount() {
+        salesCount++;
     }
 }

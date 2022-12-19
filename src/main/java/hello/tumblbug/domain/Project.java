@@ -21,6 +21,7 @@ public class Project {
     @Column(name = "PROJECT_ID")
     private Long id;
 
+    @Column(length = DBConst.PROJECT_TITLE_MAX_LENGTH)
     private String title;
 
     @Enumerated(EnumType.STRING)
@@ -48,6 +49,7 @@ public class Project {
     @NumberFormat(pattern = "###,###")
     private int currentSponsorship;
 
+    @Column(length = DBConst.PROJECT_DESCRIPTION_MAX_LENGTH)
     private String description;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)

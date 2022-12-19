@@ -1,6 +1,7 @@
 package hello.tumblbug.controller.form;
 
 import hello.tumblbug.domain.Category;
+import hello.tumblbug.domain.DBConst;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,7 +20,7 @@ import java.util.List;
 @Data
 public class ProjectUploadForm {
 
-    @Size(min = 5, max = 40)
+    @Size(min = 5, max = DBConst.PROJECT_TITLE_MAX_LENGTH)
     private String title;
 
     @NotNull
@@ -30,7 +31,7 @@ public class ProjectUploadForm {
     @Size(min = 0, max = 3)
     private List<MultipartFile> subImages = new ArrayList<>();
 
-    @Size(min = 10, max = 2000)
+    @Size(min = 10, max = DBConst.PROJECT_DESCRIPTION_MAX_LENGTH)
     private String description;
 
     @Range(min = 1000, max = 100000000)
@@ -39,13 +40,13 @@ public class ProjectUploadForm {
     @Range(min = 1000, max = 100000000)
     private int reward1Price;
 
-    @Size(min = 10, max = 500)
+    @Size(min = 10, max = DBConst.REWARD_DESCRIPTION_MAX_LENGTH)
     private String reward1Description;
 
     @Range(min = 1000, max = 100000000)
     private int reward2Price;
 
-    @Size(min = 10, max = 500)
+    @Size(min = 10, max = DBConst.REWARD_DESCRIPTION_MAX_LENGTH)
     private String reward2Description;
 
     @NotNull

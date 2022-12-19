@@ -24,6 +24,7 @@ public class CommunityPost {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member author;
 
+    @Column(length = DBConst.COMMUNITY_POST_CONTENT_MAX_LENGTH)
     private String content;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")

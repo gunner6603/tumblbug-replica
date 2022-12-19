@@ -2,10 +2,7 @@ package hello.tumblbug.service;
 
 import hello.tumblbug.domain.*;
 import hello.tumblbug.dto.*;
-import hello.tumblbug.repository.CommunityPostRepository;
-import hello.tumblbug.repository.MemberProjectRepository;
-import hello.tumblbug.repository.MemberRepository;
-import hello.tumblbug.repository.ProjectRepository;
+import hello.tumblbug.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +20,7 @@ public class ProjectService {
     private final MemberRepository memberRepository;
     private final MemberProjectRepository memberProjectRepository;
     private final CommunityPostRepository communityPostRepository;
+    private final RewardRepository rewardRepository;
 
     public Long createProject(ProjectUploadDto dto) {
         Project project = new Project();
@@ -94,14 +92,15 @@ public class ProjectService {
                 .stream().distinct().collect(Collectors.toList()); //중복 제거
     }
 
-    public void sponsorProject(Long memberId, Long projectId, Integer rewardNum) {
+    public void sponsorProject(Long memberId, Long projectId, Long rewardId) {
         Member member = memberRepository.findById(memberId);
         Project project = projectRepository.findById(projectId);
-        Reward reward = project.getRewards().get(rewardNum - 1);
+        Reward reward = rewardRepository.findById(rewardId);
         MemberProject memberProject = new MemberProject(member, project, reward);
         memberProjectRepository.save(memberProject);
         project.increaseCurrentSponsorship(reward.getPrice());
         project.increaseSponsorCount();
+        reward.increaseSalesCount();
     }
 
     public PagingDto<SimpleProjectDto> search(PagingQueryDto queryDto, String query) {

@@ -17,12 +17,16 @@ public class Member {
     @Column(name = "MEMBER_ID")
     private Long id;
 
+    @Column(length = DBConst.MEMBER_USERNAME_MAX_LENGTH)
     private String username;
 
+    @Column(length = DBConst.MEMBER_LOGIN_ID_MAX_LENGTH)
     private String loginId;
 
+    @Column(length = DBConst.MEMBER_PASSWORD_MAX_LENGTH)
     private String password;
 
+    @Column(length = DBConst.MEMBER_INFO_MAX_LENGTH)
     private String info;
 
     @ManyToMany

@@ -94,6 +94,9 @@ public class ProjectController {
 
     private void addProjectInfoToModel(Model model, Project project) {
         long leftDays = Duration.between(LocalDateTime.now(), project.getDeadline()).toDays();
+        if (leftDays < 0) {
+            leftDays = 0;
+        }
         model.addAttribute("leftDays", leftDays);
         model.addAttribute("achievementRate", project.getAchievementRate());
     }
@@ -160,12 +163,16 @@ public class ProjectController {
         return "project/list";
     }
 
-    @PostMapping("/{projectId}/sponsor/{rewardNum}")
-    public String sponsorProject(@PathVariable Long projectId, @PathVariable Integer rewardNum, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) throws IOException {
+    @PostMapping("/{projectId}/sponsor/{rewardId}")
+    public String sponsorProject(@PathVariable Long projectId, @PathVariable Long rewardId, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) throws IOException {
         if (loginMember == null) {
             return "redirect:/login?redirectURI=/project/{projectId}#option";
         }
-        projectService.sponsorProject(loginMember.getId(), projectId, rewardNum);
+        Project project = projectService.findOne(projectId);
+        if (LocalDateTime.now().isAfter(project.getDeadline())) {
+            return "redirect:/project/{projectId}";
+        }
+        projectService.sponsorProject(loginMember.getId(), projectId, rewardId);
         return "redirect:/project/{projectId}";
     }
 

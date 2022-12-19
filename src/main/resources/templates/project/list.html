@@ -48,7 +48,7 @@
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <li th:each="i: ${#numbers.sequence(pagingDto.getStartPage(), pagingDto.getEndPage(), 1)}" class="page-item"><a class="page-link" href="#" th:href="@{${#request.getRequestURI()}(pageNum=${i}, limit=${pagingDto.getLimit()})}" th:text="${i}">1</a></li>
+            <li th:each="i : ${#numbers.sequence(pagingDto.getStartPage(), pagingDto.getEndPage(), 1)}" class="page-item"><a class="page-link" href="#" th:href="@{${#request.getRequestURI()}(pageNum=${i}, limit=${pagingDto.getLimit()})}" th:text="${i}">1</a></li>
             <li class="page-item" th:classappend="${pagingDto.hasNext()} ? _ : disabled">
                 <a class="page-link" href="#" th:href="@{${#request.getRequestURI()}(pageNum=${pagingDto.endPage + 1}, limit=${pagingDto.getLimit()})}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
