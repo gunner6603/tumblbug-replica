@@ -85,7 +85,7 @@ public class ProjectController {
 
     @GetMapping("/{projectId}")
     public String projectDetail(@PathVariable Long projectId, Model model, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
-        Project project = projectService.findOne(projectId);
+        Project project = projectService.findOneFetchCreatorAndReward(projectId);
         model.addAttribute("project", project);
         addFollowButtonInfoToModel(model, loginMember, project);
         addProjectInfoToModel(model, project);
@@ -101,7 +101,7 @@ public class ProjectController {
     private void addFollowButtonInfoToModel(Model model, Member loginMember, Project project) {
         if (loginMember == null) {
             model.addAttribute("followButtonActive", true);
-        } else if (loginMember.getId() == project.getCreator().getId()) {
+        } else if (loginMember.getId().equals(project.getCreator().getId())) {
         } else {
             boolean follows = memberService.follows(loginMember.getId(), project.getCreator().getId());
             if (follows) {
@@ -182,8 +182,10 @@ public class ProjectController {
 
     @GetMapping("/{projectId}/community")
     public String communityPostList(@PathVariable Long projectId, Model model, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember) {
-        Project project = projectService.findOne(projectId);
+        Project project = projectService.findOneFetchCreatorAndReward(projectId);
+        List<CommunityPost> communityPosts = projectService.findCommunityPosts(projectId);
         model.addAttribute("project", project);
+        model.addAttribute("communityPosts", communityPosts);
         addFollowButtonInfoToModel(model, loginMember, project);
         addProjectInfoToModel(model, project);
         return "project/detail/communityPostList";
@@ -193,7 +195,6 @@ public class ProjectController {
     public String communityPostAddForm(@PathVariable Long projectId, @ModelAttribute("form") CommunityPostForm form, Model model, @SessionAttribute(value = SessionConst.LOGIN_MEMBER) Member loginMember) {
         Project project = projectService.findOne(projectId);
         model.addAttribute("project", project);
-        addFollowButtonInfoToModel(model, loginMember, project);
         addProjectInfoToModel(model, project);
         return "project/detail/communityPostAddForm";
     }
@@ -203,7 +204,6 @@ public class ProjectController {
         if (bindingResult.hasErrors()) {
             Project project = projectService.findOne(projectId);
             model.addAttribute("project", project);
-            addFollowButtonInfoToModel(model, loginMember, project);
             addProjectInfoToModel(model, project);
             return "project/detail/communityPostAddForm";
         }

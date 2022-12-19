@@ -50,6 +50,17 @@ public class ProjectRepository {
                 .getResultList();
     }
 
+    //프로젝트 상세 화면 출력에 사용(프로젝트 정보와 창작자, 리워드 정보가 함께 필요한 경우)
+    public Project findByIdFetchCreatorAndReward(Long id) {
+        return em.createQuery("select distinct p from Project p " +
+                "join fetch p.creator " +
+                "join fetch p.rewards " +
+                "where p.id = :projectId", Project.class)
+                .setParameter("projectId", id)
+                .getSingleResult();
+    }
+
+    //신규 프로젝트 목록 출력에 사용
     public SimpleProjectDtosWithTotal findSimpleByTimeDescWithOffsetLimit(int offset, int limit, boolean needTotal) {
         SimpleProjectDtosWithTotal simpleProjectDtosWithTotal = new SimpleProjectDtosWithTotal();
         List<SimpleProjectDto> resultList = em.createQuery(
@@ -68,6 +79,7 @@ public class ProjectRepository {
         return simpleProjectDtosWithTotal;
     }
 
+    //마감임박 프로젝트 목록 출력에 사용
     public SimpleProjectDtosWithTotal findNotExpiredSimpleByDeadlineAscWithOffsetLimit(int offset, int limit, boolean needTotal) {
         SimpleProjectDtosWithTotal simpleProjectDtosWithTotal = new SimpleProjectDtosWithTotal();
         List<SimpleProjectDto> resultList = em.createQuery(
@@ -91,6 +103,7 @@ public class ProjectRepository {
         return simpleProjectDtosWithTotal;
     }
 
+    //인기 프로젝트 목록 출력에 사용
     public SimpleProjectDtosWithTotal findSimpleByCurrentSponsorshipDescWithOffsetLimit(int offset, int limit, boolean needTotal) {
         SimpleProjectDtosWithTotal simpleProjectDtosWithTotal = new SimpleProjectDtosWithTotal();
         List<SimpleProjectDto> resultList = em.createQuery(
@@ -109,6 +122,7 @@ public class ProjectRepository {
         return simpleProjectDtosWithTotal;
     }
 
+    //카테고리별 프로젝트 목록 출력에 사용
     public SimpleProjectDtosWithTotal findSimpleByCategoryAndTimeDescWithOffsetLimit(Category category, int offset, int limit, boolean needTotal) {
         SimpleProjectDtosWithTotal simpleProjectDtosWithTotal = new SimpleProjectDtosWithTotal();
         List<SimpleProjectDto> resultList = em.createQuery(
@@ -132,6 +146,7 @@ public class ProjectRepository {
         return simpleProjectDtosWithTotal;
     }
 
+    //올린 프로젝트 목록 출력에 사용
     public List<SimpleProjectDto> findAllSimpleByCreatorId(Long memberId) {
         return em.createQuery(
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
@@ -142,6 +157,7 @@ public class ProjectRepository {
                 .getResultList();
     }
 
+    //후원한 프로젝트 목록 출력에 사용
     public List<SimpleProjectDto> findAllSimpleBySponsorId(Long memberId) {
         return em.createQuery(
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
@@ -155,6 +171,7 @@ public class ProjectRepository {
                 .getResultList();
     }
 
+    //검색에 사용
     public SimpleProjectDtosWithTotal findSimpleByQueryStringOnProjectTitleAndCreatorUsernameWithOffsetLimit(String query, int offset, int limit, boolean needTotal) {
         SimpleProjectDtosWithTotal simpleProjectDtosWithTotal = new SimpleProjectDtosWithTotal();
         QProject p = QProject.project;
@@ -181,16 +198,19 @@ public class ProjectRepository {
         return simpleProjectDtosWithTotal;
     }
 
+    //검색에 사용
     private BooleanExpression projectTitleContains(String query) {
         QProject p = QProject.project;
         return hasText(query) ? p.title.contains(query) : null;
     }
 
+    //검색에 사용
     private BooleanExpression memberUsernameContains(String query) {
         QMember m = QMember.member;
         return hasText(query) ? m.username.contains(query) : null;
     }
 
+    //검색에 사용
     private BooleanExpression orCondition(BooleanExpression e1, BooleanExpression e2) {
         if (e1 == null) {
             return e2;

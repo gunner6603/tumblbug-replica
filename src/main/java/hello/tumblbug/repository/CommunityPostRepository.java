@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -26,5 +27,14 @@ public class CommunityPostRepository {
     public void deleteById(Long id) {
         CommunityPost communityPost = findById(id);
         em.remove(communityPost);
+    }
+
+    public List<CommunityPost> findByProjectIdFetchAuthor(Long projectId) {
+        return em.createQuery("select cp from CommunityPost cp " +
+                "join fetch cp.author " +
+                "where cp.project.id = :projectId " +
+                "order by cp.createDate desc", CommunityPost.class)
+                .setParameter("projectId", projectId)
+                .getResultList();
     }
 }

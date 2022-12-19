@@ -48,7 +48,7 @@
                 남은시간<br/>
                 <span style="font-size: 2.5em" th:text="${leftDays}">22</span> 일<br/><br/>
                 후원자<br/>
-                <span style="font-size: 2.5em" th:text="${#lists.size(project.memberProjects)}">364</span> 명<br/>
+                <span style="font-size: 2.5em" th:text="*{{sponsorCount}}">364</span> 명<br/>
                 <hr class="my-4">
                 <div class="row">
                     <div class="col-4 my-1 fw-bold">

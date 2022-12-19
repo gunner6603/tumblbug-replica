@@ -40,6 +40,9 @@ public class Project {
     List<MemberProject> memberProjects = new ArrayList<>();
 
     @NumberFormat(pattern = "###,###")
+    private int sponsorCount;
+
+    @NumberFormat(pattern = "###,###")
     private int targetSponsorship;
 
     @NumberFormat(pattern = "###,###")
@@ -56,6 +59,7 @@ public class Project {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createdTime;
 
+    //삭제할 것
     private LocalDateTime lastModifiedTime;
 
     @OneToMany(mappedBy = "project")
@@ -68,6 +72,10 @@ public class Project {
 
     public void increaseCurrentSponsorship(int price) {
         currentSponsorship += price;
+    }
+
+    public void increaseSponsorCount() {
+        sponsorCount++;
     }
 
     public int getAchievementRate() {

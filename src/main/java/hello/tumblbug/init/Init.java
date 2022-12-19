@@ -26,7 +26,7 @@ public class Init {
     public String init() {
 
         for (int i = 1; i <= 100; i++) {
-            Member member = new Member("테스트 멤버" + i, "test" + i, "test" + i);
+            Member member = new Member("테스트 멤버" + i, "test" + i, "test" + i + "!");
             member.setInfo("테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 테스트 문자열 ");
             memberRepository.save(member);
             String title = "테스트 프로젝트" + i + " 테스트 프로젝트" + i + " 테스트 프로젝트" + i;

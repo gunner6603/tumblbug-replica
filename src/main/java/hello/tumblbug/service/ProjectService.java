@@ -45,6 +45,10 @@ public class ProjectService {
         return projectRepository.findById(id);
     }
 
+    public Project findOneFetchCreatorAndReward(Long id) {
+        return projectRepository.findByIdFetchCreatorAndReward(id);
+    }
+
     public List<SimpleProjectDto> findAllAsSimpleProjectDto() {
         return projectRepository.findAllAsSimpleProjectDto();
     }
@@ -97,11 +101,16 @@ public class ProjectService {
         MemberProject memberProject = new MemberProject(member, project, reward);
         memberProjectRepository.save(memberProject);
         project.increaseCurrentSponsorship(reward.getPrice());
+        project.increaseSponsorCount();
     }
 
     public PagingDto<SimpleProjectDto> search(PagingQueryDto queryDto, String query) {
         SimpleProjectDtosWithTotal dtoWithTotal = projectRepository.findSimpleByQueryStringOnProjectTitleAndCreatorUsernameWithOffsetLimit(query, queryDto.getOffset(), queryDto.getLimit(), true);
         return new PagingDto<SimpleProjectDto>(queryDto.getPageNum(), queryDto.getLimit(), dtoWithTotal.getTotal(), dtoWithTotal.getDtos());
+    }
+
+    public List<CommunityPost> findCommunityPosts(Long projectId) {
+        return communityPostRepository.findByProjectIdFetchAuthor(projectId);
     }
 
     public void addCommunityPost(Long projectId, Long authorId, String content) {

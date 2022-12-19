@@ -30,7 +30,7 @@
                         <img src="/static/image/pencil.png" th:src="@{/image/pencil.png}" style="float: right" width="25" height="25">
                     </div>
                 </div>
-                <th:block th:each="post : ${project.communityPosts}">
+                <th:block th:each="post : ${communityPosts}">
                     <div class="p-2" style="font-size: 15px;" th:object="${post}">
                         <img src="/static/image/defaultUserImage.png" th:src="|/project/images/*{author.userImage.storeFileName}|" class="rounded-circle" width="40" height="40">
                         <span class="fw-bold d-inline-block ms-2" th:text="*{author.username}">사용자명</span>

@@ -25,7 +25,7 @@
                                     <li><a class="dropdown-item" href="#" th:href="@{/member/{memberId}(memberId=${#request.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER_ID)})}">프로필</a></li>
                                     <form th:action="@{/logout}" method="post">
                                         <input type="hidden" name="redirectURI" th:value="${#request.getRequestURI()}">
-                                        <li><button class="dropdown-item" type="submit">로그아읏</button></li>
+                                        <li><button class="dropdown-item" type="submit">로그아웃</button></li>
                                     </form>
                                 </ul>
                             </li>
