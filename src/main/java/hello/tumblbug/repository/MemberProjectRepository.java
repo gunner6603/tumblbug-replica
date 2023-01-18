@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 
 @Repository
-@Transactional
 @RequiredArgsConstructor
 public class MemberProjectRepository {
 

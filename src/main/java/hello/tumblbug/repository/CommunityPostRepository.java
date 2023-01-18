@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Repository
-@Transactional
 @RequiredArgsConstructor
 public class CommunityPostRepository {
 

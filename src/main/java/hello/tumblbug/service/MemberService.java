@@ -28,6 +28,7 @@ public class MemberService {
         return member.getId();
     }
 
+    @Transactional(readOnly = true)
     public Member findOne(Long id) {
         return memberRepository.findById(id);
     }
@@ -55,6 +56,7 @@ public class MemberService {
         //return 1 if follower follows followee else return 0
     }
 
+    @Transactional(readOnly = true)
     public boolean follows(Long followerId, Long followeeId) {
         Member follower = memberRepository.findById(followerId);
         Member followee = memberRepository.findById(followeeId);

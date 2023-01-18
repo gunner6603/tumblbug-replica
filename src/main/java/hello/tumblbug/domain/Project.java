@@ -61,9 +61,6 @@ public class Project {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createdTime;
 
-    //삭제할 것
-    private LocalDateTime lastModifiedTime;
-
     @OneToMany(mappedBy = "project")
     private List<CommunityPost> communityPosts = new ArrayList<>();
 
@@ -99,7 +96,6 @@ public class Project {
         this.description = description;
         this.deadline = deadline;
         this.createdTime = LocalDateTime.now();
-        this.lastModifiedTime = LocalDateTime.now();
         addReward(reward1);
         addReward(reward2);
     }

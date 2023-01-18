@@ -26,7 +26,7 @@
             <div class="col-md-7 px-3 py-5">
                 <div>
                     <div class="btn btn-outline-secondary bg-light w-100 ps-4 pt-3 pe-4 mb-3 position-relative" style="height: 60px; text-align: start;">
-                        <a href="#" th:href="@{/project/{projectId}/community/add(projectId=${project.id})}" class="stretched-link text-secondary">창작자에게 응원의 한마디!</a> <!--로그인 되어 있는 경우-->
+                        <a href="#" th:href="@{/project/{projectId}/community/add(projectId=${project.id})}" class="stretched-link text-secondary">창작자에게 응원의 한마디!</a>
                         <img src="/static/image/pencil.png" th:src="@{/image/pencil.png}" style="float: right" width="25" height="25">
                     </div>
                 </div>
@@ -34,7 +34,7 @@
                     <div class="p-2" style="font-size: 15px;" th:object="${post}">
                         <img src="/static/image/defaultUserImage.png" th:src="|/project/images/*{author.userImage.storeFileName}|" class="rounded-circle" width="40" height="40">
                         <span class="fw-bold d-inline-block ms-2" th:text="*{author.username}">사용자명</span>
-                        <p class="pt-3" style="white-space: pre-line; word-break: break-all;" th:text="*{content}">
+                        <p class="pt-3" style="white-space: pre-wrap; word-break: break-all;" th:text="*{content}">
                             포스트 내용
                         </p>
                         <p class="text-secondary float-start" th:text="*{{createDate}}">2022.12.07</p>

@@ -12,7 +12,7 @@ import javax.persistence.Embeddable;
 @AllArgsConstructor
 public class UploadFile {
 
-    private String originalFileName;
+    //private String originalFileName;
 
     private String storeFileName;
 }

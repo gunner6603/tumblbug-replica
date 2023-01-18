@@ -40,7 +40,10 @@ public class MemberController {
     }
 
     @GetMapping("/{memberId}/edit")
-    public String profileEditForm(@PathVariable Long memberId, Model model) {
+    public String profileEditForm(@PathVariable Long memberId, Model model, HttpServletResponse response, @SessionAttribute(value = SessionConst.LOGIN_MEMBER) Member loginMember) throws IOException {
+        if (!loginMember.getId().equals(memberId)) {
+            response.sendError(403);
+        }
         Member member = memberService.findOne(memberId);
         MemberEditForm form = new MemberEditForm(null, member.getUsername(), member.getPassword(), member.getInfo());
         model.addAttribute("form", form);
@@ -51,7 +54,7 @@ public class MemberController {
     public String profileEdit(@PathVariable Long memberId, @Valid @ModelAttribute("form") MemberEditForm form, BindingResult bindingResult, @SessionAttribute(SessionConst.LOGIN_MEMBER) Member loginMember, HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (!loginMember.getId().equals(memberId)) {
             response.sendError(403);
-            return "redirect:/";
+            return null;
         }
 
         if (bindingResult.hasErrors()) {
@@ -112,6 +115,7 @@ public class MemberController {
         }
         if (loginMember.getId().equals(memberId)) {
             response.sendError(404); //self-following not allowed
+            return null;
         }
         memberService.followOrStopFollowingMember(loginMember.getId(), memberId);
         return "redirect:" + redirectURI;

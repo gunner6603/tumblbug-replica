@@ -20,7 +20,6 @@ import java.util.List;
 import static org.springframework.util.StringUtils.hasText;
 
 @Repository
-@Transactional
 public class ProjectRepository {
 
     private final EntityManager em;
@@ -38,16 +37,6 @@ public class ProjectRepository {
 
     public Project findById(Long id) {
         return em.find(Project.class, id);
-    }
-
-    public List<Project> findAll() {
-        return em.createQuery("select p from Project p", Project.class)
-                .getResultList();
-    }
-
-    public List<SimpleProjectDto> findAllAsSimpleProjectDto() {
-        return em.createQuery("select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) from Project p join p.creator m", SimpleProjectDto.class)
-                .getResultList();
     }
 
     //프로젝트 상세 화면 출력에 사용(프로젝트 정보와 창작자, 리워드 정보가 함께 필요한 경우)

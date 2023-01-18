@@ -43,7 +43,7 @@ public class LoginController {
             bindingResult.reject("duplicateLoginId");
             return "login/signupForm";
         }
-        return "redirect:" + redirectURI;
+        return "redirect:/login?redirectURI=" + redirectURI;
     }
 
 

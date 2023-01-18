@@ -199,7 +199,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{projectId}/community/add")
-    public String communityPostAddForm(@PathVariable Long projectId, @ModelAttribute("form") CommunityPostForm form, Model model, @SessionAttribute(value = SessionConst.LOGIN_MEMBER) Member loginMember) {
+    public String communityPostAddForm(@PathVariable Long projectId, @ModelAttribute("form") CommunityPostForm form, Model model) {
         Project project = projectService.findOne(projectId);
         model.addAttribute("project", project);
         addProjectInfoToModel(model, project);
@@ -219,10 +219,11 @@ public class ProjectController {
     }
 
     @PostMapping("/{projectId}/community/{postId}/delete")
-    public String deleteCommunityPost(@PathVariable Long projectId, @PathVariable Long postId, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, HttpServletResponse response) throws IOException {
+    public String deleteCommunityPost(@PathVariable Long postId, @SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, HttpServletResponse response) throws IOException {
         CommunityPost communityPost = projectService.findCommunityPost(postId);
         if (loginMember == null || !loginMember.getId().equals(communityPost.getAuthor().getId())) {
             response.sendError(403);
+            return null;
         } else {
             projectService.deleteCommunityPost(postId);
         }

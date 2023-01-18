@@ -35,58 +35,63 @@ public class ProjectService {
         project.addReward(dto.getReward2());
         project.setDeadline(dto.getDeadline());
         project.setCreatedTime(LocalDateTime.now());
-        project.setLastModifiedTime(LocalDateTime.now());
         return projectRepository.save(project);
     }
 
+    @Transactional(readOnly = true)
     public Project findOne(Long id) {
         return projectRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
     public Project findOneFetchCreatorAndReward(Long id) {
         return projectRepository.findByIdFetchCreatorAndReward(id);
     }
 
-    public List<SimpleProjectDto> findAllAsSimpleProjectDto() {
-        return projectRepository.findAllAsSimpleProjectDto();
-    }
-
+    @Transactional(readOnly = true)
     public List<SimpleProjectDto> findLatestN(int n) {
         return projectRepository.findSimpleByTimeDescWithOffsetLimit(0, n, false).getDtos();
     }
 
+    @Transactional(readOnly = true)
     public List<SimpleProjectDto> findMostPopularN(int n) {
         return projectRepository.findSimpleByCurrentSponsorshipDescWithOffsetLimit(0, n, false).getDtos();
     }
 
+    @Transactional(readOnly = true)
     public PagingDto<SimpleProjectDto> findLatestByPagingDto(PagingQueryDto queryDto) {
         SimpleProjectDtosWithTotal dtoWithTotal = projectRepository.findSimpleByTimeDescWithOffsetLimit(queryDto.getOffset(), queryDto.getLimit(), true);
         PagingDto<SimpleProjectDto> pagingDto = new PagingDto<>(queryDto.getPageNum(), queryDto.getLimit(), dtoWithTotal.getTotal(), dtoWithTotal.getDtos());
         return pagingDto;
     }
 
+    @Transactional(readOnly = true)
     public PagingDto<SimpleProjectDto> findMostPopularByPagingDto(PagingQueryDto queryDto) {
         SimpleProjectDtosWithTotal dtoWithTotal = projectRepository.findSimpleByCurrentSponsorshipDescWithOffsetLimit(queryDto.getOffset(), queryDto.getLimit(), true);
         PagingDto<SimpleProjectDto> pagingDto = new PagingDto<>(queryDto.getPageNum(), queryDto.getLimit(), dtoWithTotal.getTotal(), dtoWithTotal.getDtos());
         return pagingDto;
     }
 
+    @Transactional(readOnly = true)
     public PagingDto<SimpleProjectDto> findMostImminentByPagingDto(PagingQueryDto queryDto) {
         SimpleProjectDtosWithTotal dtoWithTotal = projectRepository.findNotExpiredSimpleByDeadlineAscWithOffsetLimit(queryDto.getOffset(), queryDto.getLimit(), true);
         PagingDto<SimpleProjectDto> pagingDto = new PagingDto<>(queryDto.getPageNum(), queryDto.getLimit(), dtoWithTotal.getTotal(), dtoWithTotal.getDtos());
         return pagingDto;
     }
 
+    @Transactional(readOnly = true)
     public PagingDto<SimpleProjectDto> findByCategory(Category category, PagingQueryDto queryDto) {
         SimpleProjectDtosWithTotal dtoWithTotal = projectRepository.findSimpleByCategoryAndTimeDescWithOffsetLimit(category, queryDto.getOffset(), queryDto.getLimit(), true);
         PagingDto<SimpleProjectDto> pagingDto = new PagingDto<>(queryDto.getPageNum(), queryDto.getLimit(), dtoWithTotal.getTotal(), dtoWithTotal.getDtos());
         return pagingDto;
     }
 
+    @Transactional(readOnly = true)
     public List<SimpleProjectDto> findCreatedProject(Long memberId) {
         return projectRepository.findAllSimpleByCreatorId(memberId);
     }
 
+    @Transactional(readOnly = true)
     public List<SimpleProjectDto> findSponsoredProject(Long memberId) {
         return projectRepository.findAllSimpleBySponsorId(memberId)
                 .stream().distinct().collect(Collectors.toList()); //중복 제거
@@ -103,11 +108,13 @@ public class ProjectService {
         reward.increaseSalesCount();
     }
 
+    @Transactional(readOnly = true)
     public PagingDto<SimpleProjectDto> search(PagingQueryDto queryDto, String query) {
         SimpleProjectDtosWithTotal dtoWithTotal = projectRepository.findSimpleByQueryStringOnProjectTitleAndCreatorUsernameWithOffsetLimit(query, queryDto.getOffset(), queryDto.getLimit(), true);
-        return new PagingDto<SimpleProjectDto>(queryDto.getPageNum(), queryDto.getLimit(), dtoWithTotal.getTotal(), dtoWithTotal.getDtos());
+        return new PagingDto<>(queryDto.getPageNum(), queryDto.getLimit(), dtoWithTotal.getTotal(), dtoWithTotal.getDtos());
     }
 
+    @Transactional(readOnly = true)
     public List<CommunityPost> findCommunityPosts(Long projectId) {
         return communityPostRepository.findByProjectIdFetchAuthor(projectId);
     }
@@ -123,6 +130,7 @@ public class ProjectService {
         communityPostRepository.deleteById(postId);
     }
 
+    @Transactional(readOnly = true)
     public CommunityPost findCommunityPost(Long postId) {
         return communityPostRepository.findById(postId);
     }

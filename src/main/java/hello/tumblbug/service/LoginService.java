@@ -15,6 +15,7 @@ public class LoginService {
 
     private final MemberRepository memberRepository;
 
+    @Transactional(readOnly = true)
     public Member login(String loginId, String password) {
         Optional<Member> member = memberRepository.findByLoginId(loginId);
         if (member.isEmpty() || !member.get().getPassword().equals(password)) {

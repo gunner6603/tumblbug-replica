@@ -53,7 +53,7 @@ public class Member {
         this.username = username;
         this.loginId = loginId;
         this.password = password;
-        this.userImage = new UploadFile(MemberConst.DEFAULT_USER_IMAGE_FILENAME, MemberConst.DEFAULT_USER_IMAGE_FILENAME);
+        this.userImage = new UploadFile(MemberConst.DEFAULT_USER_IMAGE_FILENAME);
     }
 
     protected Member() {}

@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import java.util.Optional;
 
 @Repository
-@Transactional
 @RequiredArgsConstructor
 public class MemberRepository {
 

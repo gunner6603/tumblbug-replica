@@ -10,13 +10,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 public class HomeController {
 
     @GetMapping("/")
-    public String home(@SessionAttribute(value = SessionConst.LOGIN_MEMBER, required = false) Member loginMember, Model model) {
-        /*
-        if (loginMember != null) {
-            model.addAttribute("member", loginMember);
-        }
-        return "home";
-         */
+    public String home() {
         return "redirect:/project/home";
     }
 }
