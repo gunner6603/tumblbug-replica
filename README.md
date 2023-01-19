@@ -1,4 +1,6 @@
 # 간소화한 텀블벅 웹사이트 만들기 프로젝트
+![main-image](./example-images/main.png)
+[예시 이미지 더보기(링크)](#예시-이미지)
 ## 구현 기능
 * 회원가입, 로그인, 로그아웃
 * 멤버 프로필 수정 (프로필 이미지, 사용자명, 비밀번호, 소개글 수정 가능)
@@ -125,3 +127,16 @@
 
 ### 추후에 해야 할 일
 * 도메인 모델, 데이터베이스 모델 관련 UML 작성
+
+## 예시 이미지
+* 업로드 페이지
+![upload](./example-images/upload.png)
+* 프로젝트 상세 화면
+![project-detail-1](./example-images/project-detail-1.png)
+![project-detail-2](./example-images/project-detail-2.png)
+* 프로젝트 커뮤니티
+![community-post-add](./example-images/community-post-add.png)
+![community-post-list](./example-images/community-post-list.png)
+* 프로필 조회
+![backed-projects](./example-images/backed-projects.png)
+![followings](./example-images/followings.png)
