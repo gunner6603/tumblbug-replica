@@ -79,9 +79,10 @@
         </div>
         <div>
             <label for="reward1Description">첫 번째 리워드 설명</label>
-            <input type="text" id="reward1Description" th:field="*{reward1Description}"
+            <textarea type="text" id="reward1Description" th:field="*{reward1Description}"
                    class="form-control"
-                   th:errorclass="field-error">
+                      th:errorclass="field-error">
+            </textarea>
             <div class="field-error" th:errors="*{reward1Description}" />
         </div>
         <div>
@@ -93,9 +94,10 @@
         </div>
         <div>
             <label for="reward2Description">두 번째 리워드 설명</label>
-            <input type="text" id="reward2Description" th:field="*{reward2Description}"
+            <textarea type="text" id="reward2Description" th:field="*{reward2Description}"
                    class="form-control"
-                   th:errorclass="field-error">
+                      th:errorclass="field-error">
+            </textarea>
             <div class="field-error" th:errors="*{reward2Description}" />
         </div>
         <div>

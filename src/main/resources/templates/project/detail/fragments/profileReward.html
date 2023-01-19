@@ -39,7 +39,7 @@
                     <div class="card-body px-4">
                         <p class="mt-2 text-secondary">&#x2713; <span th:text="*{salesCount}">100</span>명이 선택</p>
                         <p class="my-3 fw-bold fs-3" th:text="|*{{price}}원|">9,900원</p>
-                        <p class="my-3" th:text="*{description}">(얼리버드) 유니콘 비누 4종 중 택1 (배송비 포함)</p>
+                        <p class="my-3" style="white-space: pre-wrap" th:text="*{description}">(얼리버드) 유니콘 비누 4종 중 택1 (배송비 포함)</p>
                         <form th:action="@{/project/{projectId}/sponsor/{rewardId}(projectId=${project.id}, rewardId=*{id})}" method="post">
                             <div class="d-grid col-12 mx-auto my-3">
                                 <button class="btn btn-danger fw-bold" style="height: 3em" type="submit">이 옵션으로 후원하기</button>
