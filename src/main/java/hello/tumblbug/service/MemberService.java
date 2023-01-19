@@ -35,12 +35,7 @@ public class MemberService {
 
     public Member updateMember(Long id, UploadFile userImage, String username, String password, String info) {
         Member member = memberRepository.findById(id);
-        if (userImage != null) {
-            member.setUserImage(userImage);
-        }
-        member.setUsername(username);
-        member.setPassword(password);
-        member.setInfo(info);
+        member.update(userImage, username, password, info);
         return member;
     }
 

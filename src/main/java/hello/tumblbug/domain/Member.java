@@ -1,11 +1,13 @@
 package hello.tumblbug.domain;
 
+import hello.tumblbug.domain.encryption.PasswordEncrypt;
 import hello.tumblbug.file.UploadFile;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +25,11 @@ public class Member {
     @Column(length = DBConst.MEMBER_LOGIN_ID_MAX_LENGTH)
     private String loginId;
 
-    @Column(length = DBConst.MEMBER_PASSWORD_MAX_LENGTH)
+    @Column(length = 64)
     private String password;
+
+    @Column(length = 24)
+    private String salt;
 
     @Column(length = DBConst.MEMBER_INFO_MAX_LENGTH)
     private String info;
@@ -49,12 +54,32 @@ public class Member {
     private UploadFile userImage;
 
 
-    public Member(String username, String loginId, String password) {
+    public Member(String username, String loginId, String rawPassword) {
         this.username = username;
         this.loginId = loginId;
-        this.password = password;
+        setEncryptedPassword(rawPassword);
         this.userImage = new UploadFile(MemberConst.DEFAULT_USER_IMAGE_FILENAME);
     }
 
     protected Member() {}
+
+    public void update(UploadFile userImage, String username, String password, String info) {
+        if (userImage != null) {
+            this.userImage = userImage;
+        }
+        this.username = username;
+        setEncryptedPassword(password);
+        this.info = info;
+    }
+
+    private void setEncryptedPassword(String rawPassword) {
+        try {
+            String salt = PasswordEncrypt.getSalt();
+            String encryptedPassword = PasswordEncrypt.encrypt(rawPassword, salt);
+            this.salt = salt;
+            this.password = encryptedPassword;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
 }
