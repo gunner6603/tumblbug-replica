@@ -1,12 +1,12 @@
 package hello.tumblbug.repository;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQueryFactory;
+//import com.querydsl.core.types.dsl.BooleanExpression;
+//import com.querydsl.jpa.impl.JPAQueryFactory;
 import hello.tumblbug.domain.Category;
 import hello.tumblbug.domain.Project;
-import hello.tumblbug.domain.QMember;
-import hello.tumblbug.domain.QProject;
-import hello.tumblbug.dto.QSimpleProjectDto;
+//import hello.tumblbug.domain.QMember;
+//import hello.tumblbug.domain.QProject;
+//import hello.tumblbug.dto.QSimpleProjectDto;
 import hello.tumblbug.dto.SimpleProjectDto;
 import hello.tumblbug.dto.SimpleProjectDtosWithTotal;
 import org.springframework.stereotype.Repository;
@@ -23,11 +23,11 @@ import static org.springframework.util.StringUtils.hasText;
 public class ProjectRepository {
 
     private final EntityManager em;
-    private final JPAQueryFactory queryFactory;
+    //private final JPAQueryFactory queryFactory;
 
     public ProjectRepository(EntityManager em) {
         this.em = em;
-        this.queryFactory = new JPAQueryFactory(em);
+        //this.queryFactory = new JPAQueryFactory(em);
     }
 
     public Long save(Project project) {
@@ -163,6 +163,32 @@ public class ProjectRepository {
     //검색에 사용
     public SimpleProjectDtosWithTotal findSimpleByQueryStringOnProjectTitleAndCreatorUsernameWithOffsetLimit(String query, int offset, int limit, boolean needTotal) {
         SimpleProjectDtosWithTotal simpleProjectDtosWithTotal = new SimpleProjectDtosWithTotal();
+        List<SimpleProjectDto> resultList = em.createQuery(
+                        "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
+                                "from Project p join p.creator m " +
+                                "where p.title like :query or m.username like :query " +
+                                "order by p.createdTime desc", SimpleProjectDto.class)
+                .setParameter("query", "%" + query + "%")
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+        simpleProjectDtosWithTotal.setDtos(resultList);
+        if (needTotal) {
+            Long total = em.createQuery(
+                            "select count(p) from Project p " +
+                                    "join p.creator m " +
+                                    "where p.title like :query or m.username like :query " +
+                                    "order by p.createdTime desc", Long.class)
+                    .setParameter("query", "%" + query + "%")
+                    .getSingleResult();
+            simpleProjectDtosWithTotal.setTotal(total);
+        }
+        return simpleProjectDtosWithTotal;
+    }
+/*
+    //검색에 사용
+    public SimpleProjectDtosWithTotal findSimpleByQueryStringOnProjectTitleAndCreatorUsernameWithOffsetLimit(String query, int offset, int limit, boolean needTotal) {
+        SimpleProjectDtosWithTotal simpleProjectDtosWithTotal = new SimpleProjectDtosWithTotal();
         QProject p = QProject.project;
         QMember m = QMember.member;
         List<SimpleProjectDto> resultList = queryFactory
@@ -206,5 +232,5 @@ public class ProjectRepository {
         }
         return e1.or(e2);
     }
-
+*/
 }

@@ -1,6 +1,6 @@
 package hello.tumblbug.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
+//import com.querydsl.core.annotations.QueryProjection;
 import hello.tumblbug.domain.*;
 import lombok.Data;
 
@@ -26,7 +26,7 @@ public class SimpleProjectDto { //목록 출력용 DTO : 프로젝트에 대한 
 
     private int achievementRate;
 
-    @QueryProjection
+    //@QueryProjection
     public SimpleProjectDto(Long projectId, String title, Category category, Long creatorId, String creatorUsername, String mainImageStoreFileName, int targetSponsorship, int currentSponsorship) {
         this.projectId = projectId;
         this.title = title;
