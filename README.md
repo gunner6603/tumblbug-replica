@@ -127,7 +127,9 @@
 
 ### 2023-01-25
 * MariaDB로 DBMS 변경
-* AWS 메모리 부족으로 querydsl 컴파일 불가 -> querydsl 코드 jpa 코드로 변경
+* AWS EC2 free tier 메모리 부족으로 querydsl 컴파일 불가(빌드 중 무한로딩) -> querydsl 코드를 jpa 코드로 변경
+* AWS EC2를 이용하여 웹 애플리케이션 배포 완료
+![distribute](./example-images/distribute.png)
 
 ### 추후에 해야 할 일
 * 도메인 모델, 데이터베이스 모델 관련 UML 작성
