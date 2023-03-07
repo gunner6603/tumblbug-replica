@@ -34,7 +34,7 @@ public class ProjectService {
         project.addReward(dto.getReward1());
         project.addReward(dto.getReward2());
         project.setDeadline(dto.getDeadline());
-        project.setCreatedTime(LocalDateTime.now());
+        project.setDateCreated(LocalDateTime.now());
         return projectRepository.save(project);
     }
 

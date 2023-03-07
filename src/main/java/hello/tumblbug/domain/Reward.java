@@ -11,18 +11,20 @@ import javax.persistence.*;
 public class Reward {
 
     @Id @GeneratedValue
-    @Column(name = "REWARD_ID")
     private Long id;
 
     @NumberFormat(pattern = "###,###")
+    @Column(nullable = false)
     private int price;
 
-    @Column(length = DBConst.REWARD_DESCRIPTION_MAX_LENGTH)
+    @Column(length = DBConst.REWARD_DESCRIPTION_MAX_LENGTH, nullable = false)
     private String description;
 
+    @Column(nullable = false)
     private int salesCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
     public Reward(int price, String description) {

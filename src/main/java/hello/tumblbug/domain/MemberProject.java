@@ -13,24 +13,27 @@ import java.time.LocalDateTime;
 public class MemberProject {
 
     @Id @GeneratedValue
-    @Column(name = "MEMBER_PROJECT_ID")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
     private Member sponsor;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", nullable = false)
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reward_id", nullable = false)
     private Reward reward;
 
-    private LocalDateTime sponsoredTime;
+    @Column(nullable = false)
+    private LocalDateTime dateCreated;
 
     public MemberProject(Member sponsor, Project project, Reward reward) {
         this.sponsor = sponsor;
         this.project = project;
         this.reward = reward;
-        this.sponsoredTime = LocalDateTime.now();
+        this.dateCreated = LocalDateTime.now();
     }
 }

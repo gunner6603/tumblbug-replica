@@ -55,7 +55,7 @@ public class ProjectRepository {
         List<SimpleProjectDto> resultList = em.createQuery(
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
                                 "from Project p join p.creator m " +
-                                "order by p.createdTime desc", SimpleProjectDto.class)
+                                "order by p.dateCreated desc", SimpleProjectDto.class)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
@@ -118,7 +118,7 @@ public class ProjectRepository {
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
                                 "from Project p join p.creator m " +
                                 "where p.category = :category " +
-                                "order by p.createdTime desc", SimpleProjectDto.class)
+                                "order by p.dateCreated desc", SimpleProjectDto.class)
                 .setParameter("category", category)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
@@ -141,7 +141,7 @@ public class ProjectRepository {
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
                                 "from Project p join p.creator m " +
                                 "where m.id = :memberId " +
-                                "order by p.createdTime desc", SimpleProjectDto.class)
+                                "order by p.dateCreated desc", SimpleProjectDto.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
@@ -155,7 +155,7 @@ public class ProjectRepository {
                                 "join mp.project p " +
                                 "join p.creator m " +
                                 "where sp.id = :memberId " +
-                                "order by mp.sponsoredTime desc", SimpleProjectDto.class)
+                                "order by mp.dateCreated desc", SimpleProjectDto.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
@@ -167,7 +167,7 @@ public class ProjectRepository {
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
                                 "from Project p join p.creator m " +
                                 "where p.title like :query or m.username like :query " +
-                                "order by p.createdTime desc", SimpleProjectDto.class)
+                                "order by p.dateCreated desc", SimpleProjectDto.class)
                 .setParameter("query", "%" + query + "%")
                 .setFirstResult(offset)
                 .setMaxResults(limit)
@@ -178,7 +178,7 @@ public class ProjectRepository {
                             "select count(p) from Project p " +
                                     "join p.creator m " +
                                     "where p.title like :query or m.username like :query " +
-                                    "order by p.createdTime desc", Long.class)
+                                    "order by p.dateCreated desc", Long.class)
                     .setParameter("query", "%" + query + "%")
                     .getSingleResult();
             simpleProjectDtosWithTotal.setTotal(total);

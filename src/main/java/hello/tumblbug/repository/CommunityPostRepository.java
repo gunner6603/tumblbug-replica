@@ -32,7 +32,7 @@ public class CommunityPostRepository {
         return em.createQuery("select cp from CommunityPost cp " +
                 "join fetch cp.author " +
                 "where cp.project.id = :projectId " +
-                "order by cp.createDate desc", CommunityPost.class)
+                "order by cp.dateCreated desc", CommunityPost.class)
                 .setParameter("projectId", projectId)
                 .getResultList();
     }
