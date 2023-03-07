@@ -20,7 +20,7 @@ public class MemberService {
 
     public Long join(String username, String loginId, String password) {
         Optional<Member> findMember = memberRepository.findByLoginId(loginId);
-        if (!findMember.isEmpty()) {
+        if (!findMember.isEmpty()) { //로그인 아이디가 중복되는 경우
             return null;
         }
         Member member = new Member(username, loginId, password);

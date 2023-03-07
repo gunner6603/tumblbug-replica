@@ -23,18 +23,18 @@ public class ProjectService {
     private final RewardRepository rewardRepository;
 
     public Long createProject(ProjectUploadDto dto) {
-        Project project = new Project();
-        project.setTitle(dto.getTitle());
-        project.setCategory(dto.getCategory());
-        project.setCreator(dto.getCreator());
-        project.setMainImage(dto.getMainImage());
-        project.setSubImages(dto.getSubImages());
-        project.setDescription(dto.getDescription());
-        project.setTargetSponsorship(dto.getTargetSponsorship());
+        Project project = Project.builder()
+                .title(dto.getTitle())
+                .category(dto.getCategory())
+                .creator(dto.getCreator())
+                .mainImage(dto.getMainImage())
+                .subImages(dto.getSubImages())
+                .description(dto.getDescription())
+                .targetSponsorship(dto.getTargetSponsorship())
+                .deadline(dto.getDeadline())
+                .build();
         project.addReward(dto.getReward1());
         project.addReward(dto.getReward2());
-        project.setDeadline(dto.getDeadline());
-        project.setDateCreated(LocalDateTime.now());
         return projectRepository.save(project);
     }
 
@@ -94,7 +94,7 @@ public class ProjectService {
     @Transactional(readOnly = true)
     public List<SimpleProjectDto> findSponsoredProject(Long memberId) {
         return projectRepository.findAllSimpleBySponsorId(memberId)
-                .stream().distinct().collect(Collectors.toList()); //중복 제거
+                .stream().distinct().collect(Collectors.toList()); //중복 제거 (SimpleProjectDto의 equals와 hashcode를 재정의했기 때문에 잘 작동함)
     }
 
     public void sponsorProject(Long memberId, Long projectId, Long rewardId) {
