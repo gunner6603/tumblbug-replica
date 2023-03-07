@@ -4,6 +4,14 @@
 [ERD(링크)](https://www.erdcloud.com/d/7Ccv63mRFhyrDpd5C)
 
 [예시 이미지 더보기(링크)](#예시-이미지)
+
+## 개발 환경
+* 언어 Java (JDK 11), HTML/CSS/JavaScript
+* 서버 Apache 2.X Apache Tomcat 9.0
+* 프레임워크 Spring Framework 5.3.23, Spring Data Jpa 2.7.4
+* 데이터베이스 MariaDB 10.X
+* 템플릿 엔진 thymeleaf 3.0.15
+
 ## 구현 기능
 * 회원가입, 로그인, 로그아웃
 * 멤버 프로필 수정 (프로필 이미지, 사용자명, 비밀번호, 소개글 수정 가능)
