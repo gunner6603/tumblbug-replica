@@ -37,7 +37,7 @@
                         <p class="pt-3" style="white-space: pre-wrap; word-break: break-all;" th:text="*{content}">
                             포스트 내용
                         </p>
-                        <p class="text-secondary float-start" th:text="*{{createDate}}">2022.12.07</p>
+                        <p class="text-secondary float-start" th:text="*{{dateCreated}}">2022.12.07</p>
                         <form th:if="${#request.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER_ID)} != null and ${#request.getAttribute(T(hello.tumblbug.controller.SessionConst).LOGIN_MEMBER_ID).equals(post.author.id)}" th:action="@{/project/{projectId}/community/{postId}/delete(projectId=${project.id}, postId=*{id})}" method="post">
                         <button class="btn btn-danger float-end" style="width: 50px; height: 35px; font-size: 12px; margin-top: -9px">삭제</button>
                         </form>
