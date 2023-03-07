@@ -1,8 +1,10 @@
 package hello.tumblbug.domain;
 
 import hello.tumblbug.file.UploadFile;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -12,10 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Project {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @Column(length = DBConst.PROJECT_TITLE_MAX_LENGTH, nullable = false)
@@ -90,9 +94,20 @@ public class Project {
         return currentSponsorship * 100 / targetSponsorship;
     }
 
-    public Project() {
+    @Builder
+    public Project(String title, Category category, Member creator, UploadFile mainImage, List<UploadFile> subImages, int targetSponsorship, String description, LocalDateTime deadline) {
+        this.title = title;
+        this.category = category;
+        this.creator = creator;
+        this.mainImage = mainImage;
+        this.subImages = subImages;
+        this.targetSponsorship = targetSponsorship;
+        this.description = description;
+        this.deadline = deadline;
+        this.dateCreated = LocalDateTime.now();
     }
 
+    //삭제할 것
     public Project(String title, Category category, Member creator, UploadFile mainImage, int targetSponsorship, String description, LocalDateTime deadline, Reward reward1, Reward reward2) {
         this.title = title;
         this.category = category;

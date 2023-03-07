@@ -2,9 +2,9 @@ package hello.tumblbug.domain;
 
 import hello.tumblbug.domain.encryption.PasswordEncrypt;
 import hello.tumblbug.file.UploadFile;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.security.NoSuchAlgorithmException;
@@ -12,16 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @Column(length = DBConst.MEMBER_USERNAME_MAX_LENGTH, nullable = false)
     private String username;
 
-    @Column(length = DBConst.MEMBER_LOGIN_ID_MAX_LENGTH, nullable = false)
+    @Column(length = DBConst.MEMBER_LOGIN_ID_MAX_LENGTH, nullable = false, unique = true)
     private String loginId;
 
     @Column(length = 64, nullable = false)
@@ -35,8 +37,8 @@ public class Member {
 
     @ManyToMany
     @JoinTable(name = "follow", joinColumns = @JoinColumn(name = "follower_id"),
-                inverseJoinColumns = @JoinColumn(name = "followee_id"),
-                uniqueConstraints = {@UniqueConstraint(columnNames={"follower_id", "followee_id"})}
+            inverseJoinColumns = @JoinColumn(name = "followee_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"follower_id", "followee_id"})}
     )
     private List<Member> followings = new ArrayList<>();
 
@@ -61,8 +63,6 @@ public class Member {
         this.userImage = new UploadFile(MemberConst.DEFAULT_USER_IMAGE_FILENAME);
     }
 
-    protected Member() {}
-
     public void update(UploadFile userImage, String username, String password, String info) {
         if (userImage != null) {
             this.userImage = userImage;
@@ -81,5 +81,10 @@ public class Member {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+    }
+
+    //삭제할 것
+    public void setInfo(String info) {
+        this.info = info;
     }
 }

@@ -1,13 +1,16 @@
 package hello.tumblbug.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reward {
 
     @Id @GeneratedValue
@@ -32,10 +35,11 @@ public class Reward {
         this.description = description;
     }
 
-    public Reward() {
-    }
-
     public void increaseSalesCount() {
         salesCount++;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }
