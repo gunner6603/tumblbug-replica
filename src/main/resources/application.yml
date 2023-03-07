@@ -38,7 +38,7 @@ logging.level:
 #  org.hibernate.type: trace
 
 file:
-  dir: C:/projects/file/
+  dir: file/
 
 ---
 
@@ -58,4 +58,4 @@ spring:
       ddl-auto: update
 
 file:
-  dir: C:/projects/file/
+  dir: file/
