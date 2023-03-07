@@ -10,14 +10,10 @@ import hello.tumblbug.domain.Project;
 import hello.tumblbug.dto.SimpleProjectDto;
 import hello.tumblbug.dto.SimpleProjectDtosWithTotal;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static org.springframework.util.StringUtils.hasText;
 
 @Repository
 public class ProjectRepository {
@@ -55,7 +51,7 @@ public class ProjectRepository {
         List<SimpleProjectDto> resultList = em.createQuery(
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
                                 "from Project p join p.creator m " +
-                                "order by p.createdTime desc", SimpleProjectDto.class)
+                                "order by p.dateCreated desc", SimpleProjectDto.class)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
@@ -71,12 +67,13 @@ public class ProjectRepository {
     //마감임박 프로젝트 목록 출력에 사용
     public SimpleProjectDtosWithTotal findNotExpiredSimpleByDeadlineAscWithOffsetLimit(int offset, int limit, boolean needTotal) {
         SimpleProjectDtosWithTotal simpleProjectDtosWithTotal = new SimpleProjectDtosWithTotal();
+        LocalDateTime currentTime = LocalDateTime.now();
         List<SimpleProjectDto> resultList = em.createQuery(
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
                                 "from Project p join p.creator m " +
                                 "where p.deadline > :currentTime " +
                                 "order by p.deadline", SimpleProjectDto.class)
-                .setParameter("currentTime", LocalDateTime.now())
+                .setParameter("currentTime", currentTime)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
                 .getResultList();
@@ -85,7 +82,7 @@ public class ProjectRepository {
             Long total = em.createQuery(
                     "select count(p) from Project p " +
                             "where p.deadline > :currentTime", Long.class)
-                    .setParameter("currentTime", LocalDateTime.now())
+                    .setParameter("currentTime", currentTime)
                     .getSingleResult();
             simpleProjectDtosWithTotal.setTotal(total);
         }
@@ -118,7 +115,7 @@ public class ProjectRepository {
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
                                 "from Project p join p.creator m " +
                                 "where p.category = :category " +
-                                "order by p.createdTime desc", SimpleProjectDto.class)
+                                "order by p.dateCreated desc", SimpleProjectDto.class)
                 .setParameter("category", category)
                 .setFirstResult(offset)
                 .setMaxResults(limit)
@@ -141,7 +138,7 @@ public class ProjectRepository {
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
                                 "from Project p join p.creator m " +
                                 "where m.id = :memberId " +
-                                "order by p.createdTime desc", SimpleProjectDto.class)
+                                "order by p.dateCreated desc", SimpleProjectDto.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
@@ -155,7 +152,7 @@ public class ProjectRepository {
                                 "join mp.project p " +
                                 "join p.creator m " +
                                 "where sp.id = :memberId " +
-                                "order by mp.sponsoredTime desc", SimpleProjectDto.class)
+                                "order by mp.dateCreated desc", SimpleProjectDto.class)
                 .setParameter("memberId", memberId)
                 .getResultList();
     }
@@ -167,7 +164,7 @@ public class ProjectRepository {
                         "select new hello.tumblbug.dto.SimpleProjectDto(p.id, p.title, p.category, m.id, m.username, p.mainImage.storeFileName, p.targetSponsorship, p.currentSponsorship) " +
                                 "from Project p join p.creator m " +
                                 "where p.title like :query or m.username like :query " +
-                                "order by p.createdTime desc", SimpleProjectDto.class)
+                                "order by p.dateCreated desc", SimpleProjectDto.class)
                 .setParameter("query", "%" + query + "%")
                 .setFirstResult(offset)
                 .setMaxResults(limit)
@@ -177,8 +174,7 @@ public class ProjectRepository {
             Long total = em.createQuery(
                             "select count(p) from Project p " +
                                     "join p.creator m " +
-                                    "where p.title like :query or m.username like :query " +
-                                    "order by p.createdTime desc", Long.class)
+                                    "where p.title like :query or m.username like :query", Long.class)
                     .setParameter("query", "%" + query + "%")
                     .getSingleResult();
             simpleProjectDtosWithTotal.setTotal(total);
@@ -196,7 +192,7 @@ public class ProjectRepository {
                 .from(p)
                 .join(p.creator, m)
                 .where(orCondition(projectTitleContains(query), memberUsernameContains(query)))
-                .orderBy(p.createdTime.desc())
+                .orderBy(p.dateCreated.desc())
                 .offset(offset)
                 .limit(limit)
                 .fetch();

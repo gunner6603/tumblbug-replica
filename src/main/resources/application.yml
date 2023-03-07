@@ -1,30 +1,61 @@
 spring:
-  datasource:
-    #url: jdbc:h2:tcp://localhost/~/tumblbug
-    url: jdbc:mariadb://localhost:3307/tumblbug
-    username: admin
-    password: 1111
-    #driver-class-name: org.h2.Driver
-    driver-class-name: org.mariadb.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        #        show_sql: true
-        format_sql: true
   messages:
     basename: messages, errors
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 50MB
-logging.level:
-  org.hibernate.SQL: debug
+
 server:
   servlet:
     session:
       tracking-modes: cookie
-file:
-  dir: C:/projects/file/
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/tumblbug
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+logging.level:
+  org.hibernate.SQL: debug
+
 #  org.hibernate.type: trace
+
+file:
+  dir: file/
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:mariadb://localhost:3306/tumblbug
+    username: admin
+    password: 1111
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+file:
+  dir: file/

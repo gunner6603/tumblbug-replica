@@ -26,13 +26,12 @@ public class LoginService {
         String memberPassword = member.get().getPassword();
         String memberSalt = member.get().getSalt();
         try {
-            if (!PasswordEncrypt.encrypt(loginPassword, memberSalt).equals(memberPassword)) {
-                return null;
+            if (PasswordEncrypt.encrypt(loginPassword, memberSalt).equals(memberPassword)) {
+                return member.get();
             }
-            return member.get();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 }
