@@ -192,7 +192,7 @@ public class ProjectRepository {
                 .from(p)
                 .join(p.creator, m)
                 .where(orCondition(projectTitleContains(query), memberUsernameContains(query)))
-                .orderBy(p.createdTime.desc())
+                .orderBy(p.dateCreated.desc())
                 .offset(offset)
                 .limit(limit)
                 .fetch();

@@ -106,18 +106,4 @@ public class Project {
         this.deadline = deadline;
         this.dateCreated = LocalDateTime.now();
     }
-
-    //삭제할 것
-    public Project(String title, Category category, Member creator, UploadFile mainImage, int targetSponsorship, String description, LocalDateTime deadline, Reward reward1, Reward reward2) {
-        this.title = title;
-        this.category = category;
-        this.creator = creator;
-        this.mainImage = mainImage;
-        this.targetSponsorship = targetSponsorship;
-        this.description = description;
-        this.deadline = deadline;
-        this.dateCreated = LocalDateTime.now();
-        addReward(reward1);
-        addReward(reward2);
-    }
 }
