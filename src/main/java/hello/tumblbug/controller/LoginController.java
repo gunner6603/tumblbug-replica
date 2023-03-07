@@ -34,7 +34,10 @@ public class LoginController {
     }
 
     @PostMapping("/signup")
-    public String signup(@Valid @ModelAttribute("signupForm") SignupForm form, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURI) {
+    public String signup(@Valid @ModelAttribute("signupForm") SignupForm form, BindingResult bindingResult, @RequestParam(defaultValue = "/") String redirectURI, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getSession(false) != null) {
+            response.sendError(400);
+        }
         if (bindingResult.hasErrors()) {
             return "login/signupForm";
         }
@@ -48,12 +51,18 @@ public class LoginController {
 
 
     @GetMapping("/login")
-    public String loginForm(@ModelAttribute("loginForm") LoginForm form) {
+    public String loginForm(@ModelAttribute("loginForm") LoginForm form, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getSession(false) != null) {
+            response.sendError(400);
+        }
         return "login/loginForm";
     }
 
     @PostMapping("/login")
-    public String login(@Valid @ModelAttribute("loginForm") LoginForm form, BindingResult bindingResult, HttpServletRequest request, @RequestParam(defaultValue = "/") String redirectURI) {
+    public String login(@Valid @ModelAttribute("loginForm") LoginForm form, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response, @RequestParam(defaultValue = "/") String redirectURI) throws IOException {
+        if (request.getSession(false) != null) {
+            response.sendError(400);
+        }
         if (bindingResult.hasErrors()) {
             return "login/loginForm";
         }
