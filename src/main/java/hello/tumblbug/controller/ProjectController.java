@@ -19,8 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
@@ -53,8 +51,6 @@ public class ProjectController {
     @PostMapping("/add")
     public String upload(@Valid @ModelAttribute("form") ProjectUploadForm form, BindingResult bindingResult, @SessionAttribute(value = SessionConst.LOGIN_MEMBER) Member loginMember, RedirectAttributes redirectAttributes, Model model) throws IOException {
 
-        log.info("form={}", form);
-
         if (form.getMainImage().isEmpty()) {
             bindingResult.rejectValue("mainImage", "empty");
         }
@@ -64,7 +60,6 @@ public class ProjectController {
         }
 
         if (bindingResult.hasErrors()) {
-            log.info("bindingResult={}", bindingResult);
             model.addAttribute("categories", Category.values());
             return "project/uploadForm";
         }
@@ -233,7 +228,8 @@ public class ProjectController {
 
     public static <T> List<List<T>> makeGrid(List<T> sequence, int colSize) {
         List<List<T>> projectGrid = new ArrayList<>();
-        List<T> gridRow = new ArrayList<>();;
+        List<T> gridRow = new ArrayList<>();
+        ;
         for (int i = 0; i < sequence.size(); i++) {
             gridRow.add(sequence.get(i));
             if (i % colSize == colSize - 1) {
