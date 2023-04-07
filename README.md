@@ -1,5 +1,5 @@
 # 간소화한 텀블벅 웹사이트 만들기(클론코딩) 프로젝트
-![main-image](./example-images/main.png)
+![main-image](./example-images/localhost_8080_project_home_(1).png)
 
 [ERD(링크)](https://www.erdcloud.com/d/7Ccv63mRFhyrDpd5C)
 
