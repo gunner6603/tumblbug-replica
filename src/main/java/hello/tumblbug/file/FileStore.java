@@ -1,16 +1,19 @@
 package hello.tumblbug.file;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Component
 public class FileStore {
 
@@ -18,7 +21,7 @@ public class FileStore {
     private String fileDir;
 
     public String getFullPath(String filename) {
-        return fileDir + filename;
+        return Paths.get(System.getProperty("user.dir"), fileDir, filename).toString();
     }
 
     public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
@@ -38,6 +41,7 @@ public class FileStore {
         String originalFilename = multipartFile.getOriginalFilename();
         //서버에 저장하는 파일명
         String storeFileName = createStoreFileName(originalFilename);
+        log.info("path={}", getFullPath(storeFileName));
         multipartFile.transferTo(new File(getFullPath(storeFileName)));
 
         return new UploadFile(storeFileName);

@@ -150,14 +150,22 @@
 * 이미지 파일 폴더 경로 프로젝트 내부로 이동
 
 ## 예시 이미지
+* 로그인 화면
+![login](./example-images/localhost_8080_login_redirectURI=_project_home.png)
 * 업로드 페이지
-![upload](./example-images/upload.png)
+![upload](./example-images/localhost_8080_project_add_(2).png)
+![upload-validation](./example-images/localhost_8080_project_add_(4).png)
 * 프로젝트 상세 화면
-![project-detail-1](./example-images/project-detail-1.png)
-![project-detail-2](./example-images/project-detail-2.png)
-* 프로젝트 커뮤니티
-![community-post-add](./example-images/community-post-add.png)
-![community-post-list](./example-images/community-post-list.png)
-* 프로필 조회
-![backed-projects](./example-images/backed-projects.png)
-![followings](./example-images/followings.png)
+![project-detail](./example-images/localhost_8080_project_5892.png)
+* 홈 화면
+![home](./example-images/localhost_8080_project_home_(1).png)
+* 검색
+![search](./example-images/localhost_8080_project_search_query=.png)
+* 프로젝트 커뮤니티 (프로젝트 별로 독립적인 게시판)
+![community-post-add](./example-images/localhost_8080_project_790_community_add_(1).png)
+![community-post-list](./example-images/localhost_8080_project_790_community_(1).png)
+* 멤버 프로필
+![profile-main](./example-images/localhost_8080_member_5.png)
+![profile-edit](./example-images/localhost_8080_member_5_edit.png)
+![created-projects](./example-images/localhost_8080_member_5_createdProject.png)
+![followings](./example-images/localhost_8080_member_5_following.png)

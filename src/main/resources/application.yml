@@ -1,4 +1,6 @@
 spring:
+  jpa:
+    open-in-view: true
   messages:
     basename: messages, errors
   servlet:
@@ -32,13 +34,8 @@ spring:
         show_sql: true
         format_sql: true
 
-logging.level:
-  org.hibernate.SQL: debug
-
-#  org.hibernate.type: trace
-
 file:
-  dir: file/
+  dir: file
 
 ---
 
@@ -58,4 +55,4 @@ spring:
       ddl-auto: update
 
 file:
-  dir: file/
+  dir: file
