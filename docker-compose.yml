@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  spring-app:
+    build: .
+    ports:
+      - "80:8080"
+    env_file: env.dev
+    networks:
+      - backend
+
+  mariadb:
+    image: mariadb:10.5
+    env_file: db_env.dev
+    volumes:
+      - mariadb:/var/lib/mysql
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  mariadb:
+    external: true
+
