@@ -137,7 +137,7 @@
 * 리워드 설명글 줄바꿈 안 되는 오류 수정
 
 ### 2023-01-25
-* MariaDB로 DBMS 변경
+* 개발 서버 DBMS로 MariaDB 선택
 * AWS EC2 free tier 메모리 부족으로 querydsl 컴파일 불가(빌드 중 무한로딩) -> querydsl 코드를 jpa 코드로 변경
 * AWS EC2를 이용하여 웹 애플리케이션 배포 완료
 ![distribute](./example-images/distribute.png)
@@ -148,6 +148,12 @@
 * 엔티티 필드명 일부 수정
 * 임시 데이터 생성 로직 수정
 * 이미지 파일 폴더 경로 프로젝트 내부로 이동
+
+### 2023-04-20
+* Dockerfile, docker-compose.yml 작성
+* application.yml로부터 개발 서버 DB 정보 삭제하고 환경 변수로 받도록 수정
+* 환경 변수는 따로 파일로 관리
+* 로컬 환경에서 도커 컴포즈로 어플리케이션 및 데이터베이스 실행 성공
 
 ## 예시 이미지
 * 로그인 화면
