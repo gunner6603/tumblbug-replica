@@ -13,6 +13,9 @@ server:
     session:
       tracking-modes: cookie
 
+file:
+  dir: file
+
 ---
 
 spring:
@@ -34,9 +37,6 @@ spring:
         show_sql: true
         format_sql: true
 
-file:
-  dir: file
-
 ---
 
 spring:
@@ -45,14 +45,11 @@ spring:
       on-profile: dev
 
   datasource:
-    url: jdbc:mariadb://localhost:3306/tumblbug
-    username: admin
-    password: 1111
+    url: jdbc:mariadb://${DB_HOST}:${DB_PORT}/tumblbug
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
-
-file:
-  dir: file
